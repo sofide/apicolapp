@@ -1,12 +1,13 @@
 {% load staticfiles %}
 
-
-<html>
+<!doctype html>
+<html lang="en">
     <head>
         <title>Cooperativa Apícola</title>
         <link rel="icon" type="image/png" href="{% static 'vendor/bee.png' %}">
 
         <link rel="stylesheet" href="{% static 'vendor/bootsrap/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
         <!--boostrap mobile -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,21 +16,52 @@
 
     <body>
         <!-- NAVBAR -->
-        <nav class="navbar navbar-dark navbar-fixed-top">
-          <div class="container-fluid">
-              <h1>Hello world!</h1>
-          </div><!-- /.container-fluid -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <img src="{% static 'vendor/bee-sm.png' %}"> 
+                Apicolapp
+            </a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" 
+                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Apiarios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Gastos</a>
+                    </li>
+                </ul>
+            </div>
+
         </nav>
         <!-- /NAVBAR -->
 
-        <div class="container-fluid">
-            <div class="row">
-                {% block content %}
-                {% endblock %}
-            </div>
+        <div class="container-fluid main-content" style="margin-top:7rem" >
+            {% block content %}
+            {% endblock %}
         </div>
 
-        Icon made by Freepik from www.flaticon.com 
+        <!-- BOTTOM NAVBAR -->
+        <nav class="navbar navbar-light bg-light">
+            <a class="navbar-brand" href="#">UTN Facultad Regional Rafaela</a>
+            <span>Icon made by 
+                <a href="https://www.freepik.com/">
+                    Freepik
+                </a>
+                from
+                <a href="https://www.flaticon.com/">
+                    www.flaticon.com
+                </a>
+            </span>
+        </nav>
+        <!-- /BOTTOM NAVBAR -->
+
         <script src="{% static 'vendor/jquery/jquery-3.3.1.min.js' %}"></script>
         <script src="{% static 'vendor/popper/popper.min.js' %}"></script>
         <script src="{% static 'vendor/bootsrap/js/bootstrap.min.js' %}"></script>
