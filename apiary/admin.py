@@ -1,3 +1,5 @@
 from django.contrib import admin
+from apiary.models import Apiary
 
-# Register your models here.
+
+admin.site.register(Apiary)
