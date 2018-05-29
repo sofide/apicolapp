@@ -1,0 +1,31 @@
+{% extends 'core/layout.html' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h2>Iniciá sesión en Apicolapp</h2>
+        </div>
+    </div>
+    <div class="row">
+        {% if error_message %}
+            <div class="col-12">
+                <div class="alert alert-danger" role="alert">
+                    {{ error_message }}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form action="{% url 'login' %}" method="POST">
+                        {% csrf_token %}
+                        {{ login_form.as_p }}
+                        <input type="submit" value="Submit" class="btn btn-dark"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
