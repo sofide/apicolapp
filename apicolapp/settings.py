@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'livereload',
     'core',
+    'user_manager',
     'apiary',
 ]
 
