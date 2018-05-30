@@ -10,47 +10,59 @@
     <div class="row">
         <div class="col">
             <hr/>
-            <h3> ¡Bienvenido!</h3>
-            <p>Por favor iniciá sesión para acceder a la aplicación.</p>
-            <a class="btn btn-outline-warning btn-lg" href="{% url 'login' %}">
-                Iniciar Sesión
-            </a>
-            <button type="button" class="btn btn-outline-warning btn-lg">
-                Registrme
-            </button>
+            <h3> ¡Bienvenido{% if user.is_authenticated %} {{ user.username }}{% endif %}!</h3>
+            <p>
+                Esta aplicación web de la Universidad Tecnológica Nacional - Facultad Regional 
+                Rafaela, tiene como objetivo brindar un asesoramiento a la Cooperativa Apícola de 
+                María Juana.
+            </p>
+            <p class="orange"> Te interesa este proyecto? Contactate con nosotros!</p>
             <hr/>
         </div>
     </div>
 
     <div class="row">
-      <div class="col-lg-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Mis Apiarios</h5>
-            <p class="card-text">
-                Registrá tus apiarios, paneles y núcleos. Vas a poder llevar el control
-                de las cosechas, y sus rendimientos.
-            </p>
+    {% if user.is_authenticated %}
+        <div class="col-xs-12 col-lg-6">
+            <div class="card sep">
+                <div class="card-body">
+                    <h5 class="card-title">Mis Apiarios</h5>
+                    <p class="card-text">
+                        Registrá tus apiarios, paneles y núcleos. Vas a poder llevar el control
+                        de las cosechas, y sus rendimientos.
+                    </p>
 
-            <a href="#" class="btn btn-warning">Ir a mis apiarios</a>
-            <a href="#" class="btn btn-warning">Cargar cosecha</a>
-          </div>
+                    <a href="#" class="btn btn-warning sep">Ir a mis apiarios</a>
+                    <a href="#" class="btn btn-warning sep">Cargar cosecha</a>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="col-lg-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Compras y Gastos</h5>
-            <p class="card-text">
-                Cargá tus compras y mirá tus gastos. Esta aplicación te permite hacer un
-                seguimiento de tus gastos y el rendimiento de tus insumos.
-            </p>
-            <a href="#" class="btn btn-warning">Cargar compra</a>
-            <a href="#" class="btn btn-warning">Cargar inventario</a>
-            <a href="#" class="btn btn-warning">Ver gastos</a>
-          </div>
+        <div class="col-xs-12 col-lg-6">
+            <div class="card sep">
+                <div class="card-body">
+                    <h5 class="card-title">Compras y Gastos</h5>
+                    <p class="card-text">
+                        Cargá tus compras y mirá tus gastos. Esta aplicación te permite hacer un
+                        seguimiento de tus gastos y el rendimiento de tus insumos.
+                    </p>
+                    <a href="#" class="btn btn-warning sep">Cargar compra</a>
+                    <a href="#" class="btn btn-warning sep">Cargar inventario</a>
+                    <a href="#" class="btn btn-warning sep">Ver gastos</a>
+                </div>
+            </div>
         </div>
-      </div>
+    {% else %}
+        <div class="col">
+            <p>Por favor iniciá sesión para acceder a la aplicación.</p>
+            <a class="btn btn-outline-warning btn-lg" href="{% url 'login' %}">
+            Iniciar Sesión
+            </a>
+            <button type="button" class="btn btn-outline-warning btn-lg">
+            Registrme
+            </button>
+            <hr/>
+        </div>
+    {% endif %}
     </div>
 
 {% endblock %}
