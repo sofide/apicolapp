@@ -26,3 +26,8 @@ def login(request):
     else:
         login_form = forms.LoginForm()
         return render(request, 'user_manager/login.html', {'login_form': login_form})
+
+
+def logout(request):
+    auth.logout(request)
+    return redirect('/')
