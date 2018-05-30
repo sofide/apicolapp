@@ -1,0 +1,15 @@
+{% extends 'core/layout.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+        <h1 class="orange">Estos son tus apiarios</h1>
+        <ul>
+        {% for apiary in apiaries %}
+            <li> {{ apiary }} </li>
+        {% endfor %}
+        </ul>
+    </div>
+
+</div>
+{% endblock %}
