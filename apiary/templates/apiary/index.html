@@ -3,39 +3,56 @@
 {% block content %}
 <div class="row">
     <div class="col">
-        <h1 class="orange">Estos son tus apiarios</h1>
+        <h1 class="orange">Detalle de los apiarios</h1>
     </div>
 </div>
 
-<div class="row">
-    <div class="col">
-        <a class="btn btn-outline-warning btn-lg mt-3" href="{% url 'new_apiary' %}">
-            Crear nuevo apiario
-        </a>
-    </div>
-</div>
 
-<div class="row">
-    <div class="col">
-        <table class="table table-striped mt-5">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Nombre del Apiario</th>
-                    <th scope="col">Núcleos</th>
-                    <th scope="col">Colmenas</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for apiary in apiaries %}
-                <tr>
-                    <th scope="row">{{ apiary.label }}</th>
-                    <td>{{ apiary.nuc }}</td>
-                    <td>{{ apiary.hive }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-
+{% if user.is_authenticated %}
+    <div class="row">
+        <div class="col">
+            <a class="btn btn-outline-warning btn-lg mt-3" href="{% url 'new_apiary' %}">
+                Crear nuevo apiario
+            </a>
+        </div>
     </div>
-</div>
+{% else %}
+    <div class="row">
+        <div class="col">
+            <p>Para ver o cargar tus apiarios necesitás iniciar sesión en la aplicación</p>
+            <a class="btn btn-outline-warning btn-lg mt-3" href="{% url 'login' %}">
+                Iniciar sesión
+            </a>
+        </div>
+    </div>
+{% endif %}
+
+
+{% if apiaries %}
+    <div class="row">
+        <div class="col">
+            <table class="table table-striped mt-5">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Nombre del Apiario</th>
+                        <th scope="col">Núcleos</th>
+                        <th scope="col">Colmenas</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for apiary in apiaries %}
+                    <tr>
+                        <th scope="row">{{ apiary.label }}</th>
+                        <td>{{ apiary.nuc }}</td>
+                        <td>{{ apiary.hive }}</td>
+                        <td><a href="{% url 'edit_apiary' apiary.pk%}">Editar</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+{% endif %}
 {% endblock %}
