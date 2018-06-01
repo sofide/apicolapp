@@ -20,7 +20,7 @@
             <div class="card border-warning">
                 <div class="card-body">
                     {% if instance %}
-                        <h3 class="orange">{{instance.owner}} actualizá tu apiario:</h3>
+                        <h3 class="orange mb-3">Actualizá tu apiario:</h3>
                         <form action="{% url 'edit_apiary'  instance.pk %}" method="POST">
                     {% else %}
                         <h3 class="orange">Cargá un nuevo apiario:</h3>
@@ -29,7 +29,7 @@
 
                         {% csrf_token %}
                         {{ apiary_form.as_p }}
-                        <input type="submit" value="Submit" class="btn btn-warning"/>
+                        <input type="submit" value="Guardar" class="btn btn-warning"/>
                     </form>
 
                     <a class="btn btn-outline-warning btn-lg" href="{% url 'apiary_index' %}">
