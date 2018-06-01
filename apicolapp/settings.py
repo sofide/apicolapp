@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'core',
     'user_manager',
     'apiary',
+    'accounting',
 ]
 
 MIDDLEWARE = [
