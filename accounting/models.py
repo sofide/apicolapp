@@ -23,6 +23,9 @@ class Purchase(models.Model):
     class Meta:
         ordering = ['date', 'product']
 
+    def __str__(self):
+        return '{} bought {} on {}'.format(self.user, self.product, self.date)
+
 
 class Inventary(models.Model):
     '''date in which all products in stock are counted'''
@@ -31,6 +34,9 @@ class Inventary(models.Model):
 
     class Meta:
         ordering = ['date']
+
+    def __str__(self):
+        return '{}\'s inventary on {}'.format(self.user, self.date)
 
 
 class InventaryProduct(models.Model):
@@ -41,3 +47,6 @@ class InventaryProduct(models.Model):
 
     class Meta:
         ordering = ['inventary', 'product']
+
+    def __str__(self):
+        return '{} of {} in {}'.format(self.amount, self.product, self.inventary)
