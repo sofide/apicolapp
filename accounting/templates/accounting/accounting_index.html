@@ -1,0 +1,53 @@
+{% extends 'core/layout.html' %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col">
+        <h1 class="orange">Compras e inventarios de {{ user.username }}</h1>
+    </div>
+</div>
+
+
+{% if purchases %}
+    <div class="row">
+        <div class="col">
+            <h3 class="mt-5">Tus compras</h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col" class="text-center">Producto</th>
+                        <th scope="col" class="text-center">Cantidad</th>
+                        <th scope="col" class="text-center">Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for purchase in purchases %}
+                    <tr>
+                        <th scope="row" class="text-center">{{ purchase.product }}</th>
+                        <td class="text-center">{{ purchase.amount }}</td>
+                        <td class="text-center">{{ purchase.date }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <a class="btn btn-outline-warning btn-lg mt-3" 
+               href="{% url 'purchase_product' %}">
+                    Cargar una nueva compra
+            </a>
+        </div>
+    </div>
+    <hr/>
+{% endif %}
+
+{% endblock %}
