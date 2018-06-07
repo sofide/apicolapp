@@ -17,7 +17,6 @@ def index(request):
 def edit_apiary(request, apiary_pk=None):
     if apiary_pk:
         apiary_instance = get_object_or_404(Apiary, pk=apiary_pk)
-        # import pdb; pdb.set_trace()
         if apiary_instance.owner != request.user:
             return redirect('apiary_index')
     else:
