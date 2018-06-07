@@ -43,7 +43,7 @@
                 <tbody>
                 {% for apiary in apiaries %}
                     <tr>
-                        <th scope="row">{{ apiary.label }}</th>
+                        <th scope="row">{{ apiary.apiary }}</th>
                         <td>{{ apiary.nuc }}</td>
                         <td>{{ apiary.hive }}</td>
                         <td><a href="{% url 'edit_apiary' apiary.pk%}">Editar</a></td>

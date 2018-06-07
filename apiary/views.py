@@ -1,12 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
 
-from apiary.models import Apiary
+from apiary.models import Apiary, ApiaryStatus
 from apiary.forms import ApiaryForm
 
 
 def index(request):
     if request.user.is_authenticated:
-        apiaries = Apiary.objects.filter(owner=request.user)
+        apiaries = ApiaryStatus.objects.select_related('apiary').filter(
+            apiary__owner=request.user,
+            current=True
+        )
+        Apiary.objects.filter(owner=request.user)
 
     else:
         apiaries = []
