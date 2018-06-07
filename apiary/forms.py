@@ -5,4 +5,4 @@ from apiary.models import Apiary
 class ApiaryForm(ModelForm):
     class Meta:
         model = Apiary
-        fields = ['label', 'hive', 'nuc']
+        fields = ['label']
