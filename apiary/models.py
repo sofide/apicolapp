@@ -15,6 +15,20 @@ class ApiaryStatus(models.Model):
     date = models.DateField(verbose_name='fecha')
     nucs = models.IntegerField(verbose_name='núcleos')
     hives = models.IntegerField(verbose_name='colmenas')
+    current = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        '''it shouldn't save two current status for the same apiary'''
+        if self.current:
+            try:
+                old_current = ApiaryStatus.objects.get(apiary=self.apiary, current=True)
+                if self != old_current:
+                    old_current.current = False
+                    old_current.save()
+            except ApiaryStatus.DoesNotExist:
+                pass
+
+        super(ApiaryStatus, self).save(*args, **kwargs)
 
 
 class Harvest(models.Model):
