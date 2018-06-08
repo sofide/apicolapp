@@ -10,7 +10,6 @@ def index(request):
             apiary__owner=request.user,
             current=True
         )
-        Apiary.objects.filter(owner=request.user)
 
     else:
         apiaries = []
