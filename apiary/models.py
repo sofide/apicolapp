@@ -9,34 +9,14 @@ class Apiary(models.Model):
     """
     label = models.CharField(max_length=200, verbose_name='Nombre')
     owner = models.ForeignKey('auth.User', related_name='apiaries', on_delete=models.CASCADE)
-    status = models.ForeignKey('ApiaryStatus', on_delete=models.CASCADE, related_name='current')
+    status = models.ForeignKey('ApiaryStatus', on_delete=models.CASCADE,
+                               related_name='current', null=True)
 
     class Meta:
         ordering = ['owner', 'label']
 
     def __str__(self):
         return self.label
-
-    def save(self, *args, **kwars):
-        """
-        If there is not status asociated, it creates an ApiaryStatus and add it to self.status.
-        """
-        if not ApiaryStatus.objects.filter(apiary=self).exists():
-            initial_status = ApiaryStatus(
-                apiary=self,
-                date=datetime.date.today(),
-                nucs=0,
-                hives=0
-            )
-            initial_status.save()
-            self.status = initial_status
-
-        if not self.status:
-            self.status = ApiaryStatus.objects.filter(apiary=self).first()
-
-
-
-        super(Apiary, self).save(*args, **kwars)
 
 
 class ApiaryStatus(models.Model):
