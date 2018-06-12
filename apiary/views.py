@@ -6,10 +6,7 @@ from apiary.forms import ApiaryForm
 
 def index(request):
     if request.user.is_authenticated:
-        apiaries = ApiaryStatus.objects.select_related('apiary').filter(
-            apiary__owner=request.user,
-            current=True
-        )
+        apiaries = Apiary.objects.select_related('status').filter(owner=request.user)
 
     else:
         apiaries = []
