@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'livereload',
     'core',
     'user_manager',
-    'apiary',
+    'apiary.app.ApiaryConfig',
     'accounting',
 ]
 
