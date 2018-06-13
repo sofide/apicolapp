@@ -1,3 +1,5 @@
+import datetime
+
 import pytest
 
 from apiary.models import Apiary, ApiaryStatus, Harvest
@@ -36,3 +38,22 @@ def test_new_apiary_creates_a_status_instance(manolo_user):
     apiary = Apiary.objects.create(label='new apiary', owner=manolo_user)
 
     assert isinstance(apiary.status, ApiaryStatus)
+
+
+def test_apiary_not_save_without_status(manolo_user):
+    """
+    Prevent an apiary to be saved without an status.
+    """
+    apiary = Apiary.objects.create(label='new apiary', owner=manolo_user)
+    apiary_status, created = ApiaryStatus.objects.get_or_create(
+        apiary=apiary,
+        date=datetime.datetime.today()
+    )
+    apiary_status.nucs = 15
+    apiary_status.hives = 20
+    apiary_status.save()
+
+    apiary.status = None
+    apiary.save()
+
+    assert apiary.status == apiary_status
