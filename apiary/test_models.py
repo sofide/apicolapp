@@ -45,13 +45,11 @@ def test_apiary_not_save_without_status(manolo_user):
     Prevent an apiary to be saved without an status.
     """
     apiary = Apiary.objects.create(label='new apiary', owner=manolo_user)
-    apiary_status, created = ApiaryStatus.objects.get_or_create(
+    apiary_status, created = ApiaryStatus.objects.update_or_create(
         apiary=apiary,
-        date=datetime.datetime.today()
+        date=datetime.datetime.today(),
+        defaults={'nucs':15, 'hives':20}
     )
-    apiary_status.nucs = 15
-    apiary_status.hives = 20
-    apiary_status.save()
 
     apiary.status = None
     apiary.save()
