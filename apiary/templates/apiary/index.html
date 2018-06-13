@@ -11,7 +11,7 @@
 {% if user.is_authenticated %}
     <div class="row">
         <div class="col">
-            <a class="btn btn-outline-warning btn-lg mt-3" href="{% url 'new_apiary' %}">
+            <a class="btn btn-outline-warning btn-lg mt-3" href="{% url 'apiary_new' %}">
                 Crear nuevo apiario
             </a>
         </div>
@@ -46,7 +46,9 @@
                         <th scope="row">{{ apiary }}</th>
                         <td class="text-center">{{ apiary.status.nucs }}</td>
                         <td class="text-center">{{ apiary.status.hives }}</td>
-                        <td class="text-center"><a href="{% url 'edit_apiary' apiary.pk%}">Editar</a></td>
+                        <td class="text-center"><a href="{% url 'apiary_edit' apiary.pk%}">
+                                Editar
+                        </a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
