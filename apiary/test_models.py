@@ -1,6 +1,7 @@
 import pytest
 
 from apiary.models import Apiary, ApiaryStatus, Harvest
+from apiary.tests import manolo_user
 
 
 def test_apiary_fields():
@@ -29,3 +30,9 @@ def test_harvest_fields():
     assert hasattr(Harvest._meta.model, 'apiary')
     assert hasattr(Harvest._meta.model, 'amount')
     assert hasattr(Harvest._meta.model, 'date')
+
+
+def test_new_apiary_creates_a_status_instance(manolo_user):
+    apiary = Apiary.objects.create(label='new apiary', owner=manolo_user)
+
+    assert isinstance(apiary.status, ApiaryStatus)
