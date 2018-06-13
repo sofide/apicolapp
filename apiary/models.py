@@ -30,6 +30,7 @@ class ApiaryStatus(models.Model):
 
     class Meta:
         ordering = ['-date']
+        unique_together = ('apiary', 'date')
 
 
 class Harvest(models.Model):
