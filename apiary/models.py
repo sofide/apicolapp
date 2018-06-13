@@ -20,6 +20,9 @@ class Apiary(models.Model):
 
 
 class ApiaryStatus(models.Model):
+    """
+    Track the number of Apiary's nucs and hives on a sepecific date.
+    """
     apiary = models.ForeignKey(Apiary, on_delete=models.CASCADE, related_name='status_history')
     date = models.DateField(verbose_name='fecha')
     nucs = models.IntegerField(verbose_name='núcleos')
@@ -30,6 +33,9 @@ class ApiaryStatus(models.Model):
 
 
 class Harvest(models.Model):
+    """
+    Honey harvest in a specific apiary.
+    """
     apiary = models.ForeignKey(Apiary, on_delete=models.CASCADE, related_name='harvest')
     amount = models.IntegerField(verbose_name='cantidad')
     date = models.DateField(verbose_name='fecha')
