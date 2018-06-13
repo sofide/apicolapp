@@ -33,3 +33,6 @@ class Harvest(models.Model):
     apiary = models.ForeignKey(Apiary, on_delete=models.CASCADE, related_name='harvest')
     amount = models.IntegerField(verbose_name='cantidad')
     date = models.DateField(verbose_name='fecha')
+
+    class Meta:
+        ordering = ['-date']
