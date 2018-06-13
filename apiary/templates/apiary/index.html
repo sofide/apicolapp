@@ -34,19 +34,19 @@
             <table class="table table-striped mt-5">
                 <thead class="thead-dark">
                     <tr>
-                        <th scope="col">Nombre del Apiario</th>
-                        <th scope="col">Núcleos</th>
-                        <th scope="col">Colmenas</th>
-                        <th scope="col"></th>
+                        <th scope="col" class="text-center">Nombre del Apiario</th>
+                        <th scope="col" class="text-center">Núcleos</th>
+                        <th scope="col" class="text-center">Colmenas</th>
+                        <th scope="col" class="text-center"></th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for apiary in apiaries %}
                     <tr>
-                        <th scope="row">{{ apiary.apiary }}</th>
-                        <td>{{ apiary.nuc }}</td>
-                        <td>{{ apiary.hive }}</td>
-                        <td><a href="{% url 'edit_apiary' apiary.pk%}">Editar</a></td>
+                        <th scope="row">{{ apiary }}</th>
+                        <td class="text-center">{{ apiary.status.nucs }}</td>
+                        <td class="text-center">{{ apiary.status.hives }}</td>
+                        <td class="text-center"><a href="{% url 'edit_apiary' apiary.pk%}">Editar</a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
