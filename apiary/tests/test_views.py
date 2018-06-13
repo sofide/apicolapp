@@ -22,6 +22,7 @@ def test_manolo_has_apiaries(client_logged_as_manolo, the_twenty_apiaries_of_man
     assert 'apiaries' in response.context
 
     assert len(response.context['apiaries']) == the_twenty_apiaries_of_manolo.count()
+    assert the_twenty_apiaries_of_manolo.first().label in str(response.content)
 
 
 def test_new_apiary_is_working(client_logged_as_manolo):
