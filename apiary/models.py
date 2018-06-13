@@ -24,7 +24,7 @@ class ApiaryStatus(models.Model):
     Track the number of Apiary's nucs and hives on a sepecific date.
     """
     apiary = models.ForeignKey(Apiary, on_delete=models.CASCADE, related_name='status_history')
-    date = models.DateField(verbose_name='fecha')
+    date = models.DateField(verbose_name='fecha', null=True)
     nucs = models.IntegerField(verbose_name='núcleos')
     hives = models.IntegerField(verbose_name='colmenas')
 

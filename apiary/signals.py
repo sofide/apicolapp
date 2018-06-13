@@ -1,5 +1,3 @@
-import datetime
-
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -10,7 +8,7 @@ def create_apiary_status_if_not_exists(sender, instance, created, **kwargs):
     if not ApiaryStatus.objects.filter(apiary=instance).exists():
         initial_status = ApiaryStatus(
             apiary=instance,
-            date=datetime.date.today(),
+            date=None,
             nucs=0,
             hives=0
         )
