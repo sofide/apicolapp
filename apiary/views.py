@@ -43,3 +43,5 @@ def edit_apiary(request, apiary_pk=None):
             'apiary_form': apiary_form,
             'instance': apiary_instance,
         })
+    else:
+        return redirect('login')
