@@ -19,23 +19,47 @@ def edit_apiary(request, apiary_pk=None):
         apiary_instance = get_object_or_404(Apiary, pk=apiary_pk)
         if apiary_instance.owner != request.user:
             return redirect('apiary_index')
+        apiary_data = {
+            'label': apiary_instance.label,
+            'nucs': apiary_instance.status.nucs,
+            'hives': apiary_instance.status.hives,
+        }
     else:
         apiary_instance = None
+        apiary_data = {}
 
     if request.user.is_authenticated:
         if request.method == 'POST':
-            apiary_form = ApiaryForm(request.POST, instance=apiary_instance)
+            apiary_form = ApiaryForm(request.POST)
 
             if apiary_form.is_valid():
-                new_apiary = apiary_form.save(commit=False)
-                new_apiary.owner = request.user
-                new_apiary.save()
+                label = apiary_form.cleaned_data['label']
+                hives = apiary_form.cleaned_data['hives']
+                nucs = apiary_form.cleaned_data['nucs']
+                date = apiary_form.cleaned_data['date']
+
+                if not apiary_instance:
+                    apiary_instance = Apiary.objects.create(label=label, owner=request.user)
+                else:
+                    apiary_instance.label = label
+
+                status_apiary, created = ApiaryStatus.objects.update_or_create(
+                    apiary=apiary_instance,
+                    date=date,
+                    defaults= {
+                        'nucs':nucs,
+                        'hives':hives
+                    }
+                )
+
+                apiary_instance.status = status_apiary
+                apiary_instance.save()
 
                 return redirect('apiary_index')
 
-        elif apiary_pk:
-            apiary = get_object_or_404(Apiary, pk=apiary_pk)
-            apiary_form = ApiaryForm(instance=apiary)
+        elif apiary_data:
+            apiary_form = ApiaryForm(apiary_data)
+
         else:
             apiary_form = ApiaryForm()
 
