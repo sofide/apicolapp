@@ -2,11 +2,6 @@ import pytest
 
 from django.urls import reverse
 
-from apiary.test_fixtures import (
-    client_logged_as_manolo, apiary_of_manolo, the_twenty_apiaries_of_manolo
-)
-
-
 def test_apiary_index_is_working(client, django_user_model):
     """
     Test if apiary_index view is working.

@@ -3,7 +3,6 @@ import datetime
 import pytest
 
 from apiary.models import Apiary, ApiaryStatus, Harvest
-from apiary.test_fixtures import manolo_user
 
 
 def test_apiary_fields():
