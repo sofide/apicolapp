@@ -22,4 +22,4 @@ def create_apiary_status_if_not_exists(sender, instance, created, **kwargs):
 @receiver(post_save, sender=Apiary)
 def prevent_to_save_apiary_without_status(sender, instance, created, **kwargs):
     if not instance.status:
-        instance.status = ApiaryStatus.objects.filter(apiary=self).first()
+        instance.status = ApiaryStatus.objects.filter(apiary=instance).first()
