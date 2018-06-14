@@ -1,3 +1,5 @@
+import datetime
+
 from django.shortcuts import render, redirect, get_object_or_404
 
 from apiary.models import Apiary, ApiaryStatus
@@ -24,6 +26,7 @@ def apiary_abm(request, apiary_pk=None):
             'label': apiary_instance.label,
             'nucs': apiary_instance.status.nucs,
             'hives': apiary_instance.status.hives,
+            'date': datetime.datetime.today(),
         }
     else:
         apiary_instance = None
