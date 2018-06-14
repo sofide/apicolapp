@@ -8,6 +8,13 @@
 </div>
 <div class="row">
     <div class="col">
+        {{ div|safe }}
+        {{ script|safe }}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
         <table class="table table-bordered mt-5">
             <thead>
                 <tr>
@@ -17,7 +24,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for row in history_table.body_table %}
+                {% for row in history_table.body %}
                     <tr>
                         {% for cell in row %}
                             <td class="text-center">{{ cell }}</td>

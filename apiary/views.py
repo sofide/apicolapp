@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from apiary.models import Apiary, ApiaryStatus
 from apiary.forms import ApiaryForm
-from apiary.data import apiary_history_table
+from apiary.data import apiary_history_table, apiary_history_chart
 
 
 def index(request):
@@ -75,8 +75,11 @@ def apiary_abm(request, apiary_pk=None):
 def apiary_detail(request, apiary_pk):
     apiary = get_object_or_404(Apiary, pk=apiary_pk)
     history_table = apiary_history_table(apiary)
+    script, div = apiary_history_chart(history_table['body'], apiary.label)
 
     return render(request, 'apiary/detail.html', {
         'apiary': apiary,
         'history_table': history_table,
+        'div': div,
+        'script': script,
     })
