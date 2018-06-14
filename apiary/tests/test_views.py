@@ -1,5 +1,6 @@
-import pytest
+import datetime
 
+import pytest
 from django.urls import reverse
 
 from apiary.models import Apiary
@@ -81,3 +82,20 @@ def test_edit_apiary_is_editing_the_apiary(client_logged_as_manolo, apiary_of_ma
     assert response.status_code == 302
     assert response.url == reverse('apiary_index')
     assert new_apiary.status.hives == old_hives + 1000
+
+
+def test_new_apiary_is_creating_new_apiaries(client_logged_as_manolo, manolo_user):
+    old_apiaries = Apiary.objects.filter(owner=manolo_user).count()
+
+    response = client_logged_as_manolo.post(reverse('apiary_new'), {
+        'label': 'the new apiary',
+        'hives': 50,
+        'nucs': 50,
+        'date': datetime.datetime.today(),
+    })
+
+    new_apiaries = Apiary.objects.filter(owner=manolo_user).count()
+
+    assert response.status_code == 302
+    assert response.url == reverse('apiary_index')
+    assert new_apiaries == old_apiaries + 1
