@@ -8,6 +8,9 @@ from apiary.models import Apiary, ApiaryStatus
 MANOLO_USERNAME = 'manolo'
 MANOLO_PASSWORD = 'password_de_manolo'
 
+SAMUEL_USERNAME = 'samuel'
+SAMUEL_PASSWORD = 'password_de_samuel'
+
 
 @pytest.fixture
 def manolo_user(django_user_model):
@@ -16,6 +19,18 @@ def manolo_user(django_user_model):
     """
     user = django_user_model.objects.create(username=MANOLO_USERNAME)
     user.set_password(MANOLO_PASSWORD)
+    user.save()
+
+    return user
+
+
+@pytest.fixture
+def samuel_user(django_user_model):
+    """
+    Creates and returns a user with username 'samuel'.
+    """
+    user = django_user_model.objects.create(username=SAMUEL_USERNAME)
+    user.set_password(SAMUEL_PASSWORD)
     user.save()
 
     return user
@@ -52,3 +67,12 @@ def apiary_of_manolo(manolo_user):
 
     return new_apiary
 
+
+@pytest.fixture
+def apiary_of_samuel(samuel_user):
+    """
+    Creates and returns twenty apiaries with samuel as owner.
+    """
+    new_apiary = Apiary.objects.create(label='Apiary of Samuel', owner=samuel_user)
+
+    return new_apiary
