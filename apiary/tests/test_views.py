@@ -68,6 +68,9 @@ def test_edit_apiary_of_other_user_redirects(client_logged_as_manolo, apiary_of_
 
 
 def test_edit_apiary_is_editing_the_apiary(client_logged_as_manolo, apiary_of_manolo):
+    """
+    Test if apiary_edit view is editing the apiary.
+    """
     old_hives = apiary_of_manolo.status.hives
 
     response = client_logged_as_manolo.post(reverse('apiary_edit', args=(apiary_of_manolo.pk,)), {
@@ -85,6 +88,9 @@ def test_edit_apiary_is_editing_the_apiary(client_logged_as_manolo, apiary_of_ma
 
 
 def test_new_apiary_is_creating_new_apiaries(client_logged_as_manolo, manolo_user):
+    """
+    Test if apiary_new view is creating a new apiary.
+    """
     old_apiaries = Apiary.objects.filter(owner=manolo_user).count()
 
     response = client_logged_as_manolo.post(reverse('apiary_new'), {
