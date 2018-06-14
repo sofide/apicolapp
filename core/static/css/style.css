@@ -5,3 +5,12 @@
 .orange-dk {
     color: orange;
 }
+
+.orange-link {
+    color: black;
+}
+
+.orange-link:hover {
+    color: orange;
+    text-decoration: none;
+}
