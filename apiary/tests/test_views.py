@@ -77,14 +77,14 @@ def test_edit_apiary_is_editing_the_apiary(client_logged_as_manolo, apiary_of_ma
         'label':apiary_of_manolo.label,
         'hives': old_hives + 1000,
         'nucs': apiary_of_manolo.status.nucs,
-        'date': apiary_of_manolo.status.date,
+        'date': '01/01/2010',
     })
 
     new_apiary = Apiary.objects.get(pk=apiary_of_manolo.pk)
 
+    assert new_apiary.status.hives == old_hives + 1000
     assert response.status_code == 302
     assert response.url == reverse('apiary_index')
-    assert new_apiary.status.hives == old_hives + 1000
 
 
 def test_new_apiary_is_creating_new_apiaries(client_logged_as_manolo, manolo_user):
@@ -97,11 +97,11 @@ def test_new_apiary_is_creating_new_apiaries(client_logged_as_manolo, manolo_use
         'label': 'the new apiary',
         'hives': 50,
         'nucs': 50,
-        'date': datetime.datetime.today(),
+        'date': '01/01/2010',
     })
 
     new_apiaries = Apiary.objects.filter(owner=manolo_user).count()
 
+    assert new_apiaries == old_apiaries + 1
     assert response.status_code == 302
     assert response.url == reverse('apiary_index')
-    assert new_apiaries == old_apiaries + 1
