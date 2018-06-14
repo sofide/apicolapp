@@ -5,6 +5,7 @@ from apiary import views
 
 urlpatterns = [
     path('', views.index, name='apiary_index'),
-    path('new/', views.edit_apiary, name='apiary_new'),
-    path('edit/<int:apiary_pk>', views.edit_apiary, name='apiary_edit'),
+    path('<int:apiary_pk>', views.apiary_detail, name='apiary_detail'),
+    path('new/', views.apiary_abm, name='apiary_new'),
+    path('edit/<int:apiary_pk>', views.apiary_abm, name='apiary_edit'),
 ]
