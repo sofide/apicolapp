@@ -42,3 +42,10 @@ def test_edit_apiary_is_working(client_logged_as_manolo, apiary_of_manolo):
     response = client_logged_as_manolo.get(reverse('apiary_edit', args=(apiary_of_manolo.pk,)))
 
     assert response.status_code == 200
+
+
+def test_edit_apiary_of_other_user_redirect_you(client_logged_as_manolo, apiary_of_samuel):
+    response = client_logged_as_manolo.get(reverse('apiary_edit', args=(apiary_of_samuel.pk,)))
+
+    assert response.status_code == 302
+    assert response.url == reverse('apiary_index')
