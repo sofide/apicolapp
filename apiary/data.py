@@ -16,7 +16,7 @@ def apiary_history_table(apiary):
 
     table = {
         'headers': ['Fecha', 'Colmenas', 'Núcleos'],
-        'body_table': [[st.date, st.hives, st.nucs] for st in status_history],
+        'body': [[st.date, st.hives, st.nucs] for st in status_history if st.date != None],
     }
 
     return table
