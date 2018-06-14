@@ -6,7 +6,36 @@
         <h1 class="orange">Detalles del apiario "{{ apiary }}" de {{ user.username }}</h1>
     </div>
 </div>
+
 <div class="row">
+    <div class="col">
+        <div class="card mt-5">
+            <div class="card-body">
+                <h4 class="card-text">
+                    Actualmente el apiario tiene  
+                    {% if apiary.status.hives == 1 %}
+                        1 colmena
+                    {% else %}
+                        {{ apiary.status.hives }} colmenas
+                    {% endif %}
+                    y  
+                    {% if apiary.status.nucs == 1 %}
+                        1 núcleo. 
+                    {% else %}
+                        {{ apiary.status.nucs }} núcleos. 
+                    {% endif %}
+                </h4>
+
+                <a href="{% url 'apiary_edit' apiary.pk %}" class="btn btn-warning mt-2">
+                    Actualizar apiario
+                </a>
+                <a href="#" class="btn btn-warning mt-2">Cargar cosecha</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
     <div class="col">
         {{ div|safe }}
         {{ script|safe }}
