@@ -2,6 +2,9 @@ import pytest
 
 from django.urls import reverse
 
+from apiary.models import Apiary
+
+
 def test_apiary_index_is_working(client, django_user_model):
     """
     Test if apiary_index view is working.
@@ -53,7 +56,7 @@ def test_edit_apiary_is_working(client_logged_as_manolo, apiary_of_manolo):
     assert response.status_code == 200
 
 
-def test_edit_apiary_of_other_user_redirect_you(client_logged_as_manolo, apiary_of_samuel):
+def test_edit_apiary_of_other_user_redirects(client_logged_as_manolo, apiary_of_samuel):
     """
     Test if edit another user's apiary view is redirecting to apiary index.
     """
@@ -61,3 +64,20 @@ def test_edit_apiary_of_other_user_redirect_you(client_logged_as_manolo, apiary_
 
     assert response.status_code == 302
     assert response.url == reverse('apiary_index')
+
+
+def test_edit_apiary_is_editing_the_apiary(client_logged_as_manolo, apiary_of_manolo):
+    old_hives = apiary_of_manolo.status.hives
+
+    response = client_logged_as_manolo.post(reverse('apiary_edit', args=(apiary_of_manolo.pk,)), {
+        'label':apiary_of_manolo.label,
+        'hives': old_hives + 1000,
+        'nucs': apiary_of_manolo.status.nucs,
+        'date': apiary_of_manolo.status.date,
+    })
+
+    new_apiary = Apiary.objects.get(pk=apiary_of_manolo.pk)
+
+    assert response.status_code == 302
+    assert response.url == reverse('apiary_index')
+    assert new_apiary.status.hives == old_hives + 1000
