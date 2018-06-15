@@ -1,9 +1,9 @@
 from django.contrib import admin
 
-from accounting.models import Product, Purchase, Inventary, InventaryProduct
+from accounting import models
 
 
-admin.site.register(Product)
-admin.site.register(Purchase)
-admin.site.register(Inventary)
-admin.site.register(InventaryProduct)
+admin.site.register(models.Product)
+admin.site.register(models.Purchase)
+admin.site.register(models.Category)
+admin.site.register(models.DepreciationInfo)

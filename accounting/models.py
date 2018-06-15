@@ -1,52 +1,63 @@
 from django.db import models
 
 
-class Product(models.Model):
-    '''location where beehives and nucs are kept'''
-    name = models.CharField(null=True, max_length=200, blank=True, verbose_name='Nombre')
-    description = models.TextField(null=True, blank=True, verbose_name='Descripción')
+class Category(models.Model):
+    """
+    Category of products, for example: vehicle, supply, etc.
+    """
+    label = models.CharField(max_length=200)
+    depreciation_period = models.IntegerField()
 
     class Meta:
-        ordering = ['name']
+        ordering = ['label',]
+
+    def __str__(self):
+        return self.label
+
+
+class Product(models.Model):
+    """
+    User products that are used in the beekeeping activities.
+    """
+    name = models.CharField(max_length=200)
+    description = models.TextField()
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='products')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
+
+    class Meta:
+        ordering = ['category', 'name']
 
     def __str__(self):
         return self.name
 
 
 class Purchase(models.Model):
-    '''purchase of a single product'''
+    """
+    Product's purchases to track expenses.
+    """
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='purchases')
-    user = models.ForeignKey('auth.User', related_name='purchases', on_delete=models.CASCADE)
-    amount = models.IntegerField(verbose_name='Cantidad')
-    date = models.DateField(verbose_name='Fecha')
+    date = models.DateField()
+    amount = models.FloatField()
+    value = models.FloatField()
+    logged_datetime = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['date', 'product']
 
     def __str__(self):
-        return '{} bought {} on {}'.format(self.user, self.product, self.date)
+        return '{} - {}'.format(self.date, self.product)
 
 
-class Inventary(models.Model):
-    '''date in which all products in stock are counted'''
-    user = models.ForeignKey('auth.User', related_name='inventaries', on_delete=models.CASCADE)
-    date = models.DateField(verbose_name='Fecha')
-
-    class Meta:
-        ordering = ['date']
-
-    def __str__(self):
-        return '{}\'s inventary on {}'.format(self.user, self.date)
-
-
-class InventaryProduct(models.Model):
-    '''product counted in an inventary'''
-    inventary = models.ForeignKey(Inventary, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    amount = models.IntegerField(verbose_name='Cantidad')
+class DepreciationInfo(models.Model):
+    """
+    'Purchase' extra info, to calculate depreciation of products
+    that are in categories with depreciation_period.
+    """
+    purchase = models.OneToOneField(Purchase, on_delete=models.CASCADE)
+    model_year = models.IntegerField()
 
     class Meta:
-        ordering = ['inventary', 'product']
+        ordering = ['purchase']
 
     def __str__(self):
-        return '{} of {} in {}'.format(self.amount, self.product, self.inventary)
+        return '{} - {}'.format(self.purchase.product, self.model_year)
