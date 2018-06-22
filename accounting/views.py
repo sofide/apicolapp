@@ -61,7 +61,7 @@ def purchase_product(request):
         })
     else:
         # edit redirect response to use new product in a purchase
-        response = redirect('product_edit')
+        response = redirect('product_new')
         response['Location'] += '?next=purchase'
         return response
 
