@@ -6,15 +6,24 @@ from django.urls import reverse
 from apiary.models import Apiary
 
 
-def test_apiary_index_is_working(client, django_user_model):
+def test_apiary_index_is_working(client_logged_as_manolo, django_user_model):
     """
     Test if apiary_index view is working.
     """
-    response = client.get('/apiary/')
+    response = client_logged_as_manolo.get('/apiary/')
     assert response.status_code == 200
 
-    response = client.get(reverse('apiary_index'))
+    response = client_logged_as_manolo.get(reverse('apiary_index'))
     assert response.status_code == 200
+
+
+def test_apiary_index_is_redirecting_if_not_logged(client, django_user_model):
+    """
+    Test if apiary_index is redirecting to login if user is not authenticated.
+    """
+    response = client.get('/apiary/')
+    assert response.status_code == 302
+    assert response.url.startswith(reverse('login'))
 
 
 def test_manolo_has_apiaries(client_logged_as_manolo, the_twenty_apiaries_of_manolo):
