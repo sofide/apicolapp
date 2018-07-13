@@ -1,0 +1,74 @@
+{% extends 'core/layout.html' %}
+{% block content %}
+    {% if form.errors %}
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-danger" role="alert">
+                    <p>
+                        El nombre de usuario o la contraseña son incorrectos. 
+                        Por favor, intentá nuevamente
+                    </p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-warning">
+                <div class="card-body">
+                    <h3 class="orange">Iniciá sesión en Apicolapp</h3>
+                    {% if next %}
+                        <div class="row">
+                            <div class="col-12">
+                                {% if user.is_authenticated %}
+                                    <p>
+                                        El usuario {{ user.username }} no tiene acceso a esta página. Para
+                                        continuar iniciá sesión con una cuenta que tenga autorización para ver la
+                                        página solicitada.
+                                    </p>
+                                {% else %}
+                                    <p>Para ver esta página, necesitás estar registrado.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="col-12">
+                            <form method="post" action="{% url 'login' %}">
+                                {% csrf_token %}
+                                {{ form.as_p }}
+
+                                <input type="submit" value="Iniciar Sesión" class="btn btn-warning"/>
+                                <input type="hidden" name="next" value="{{ next }}" />
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <p><a href="{% url 'password_reset' %}">Olvidaste tu contraseña?</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+<!---
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-warning">
+                <div class="card-body">
+                    <h3 class="orange">Iniciá sesión en Apicolapp</h3>
+                    <form action="{% url 'login' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="submit" value="Iniciar Sesión" class="btn btn-warning"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+-->
