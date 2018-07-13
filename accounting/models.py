@@ -6,6 +6,7 @@ class Category(models.Model):
     Category of products, for example: vehicle, supply, etc.
     """
     label = models.CharField(max_length=200)
+    description = models.TextField()
     depreciation_period = models.IntegerField()
 
     class Meta:
