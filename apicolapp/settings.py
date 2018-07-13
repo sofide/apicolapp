@@ -93,6 +93,14 @@ LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
 
+# Email settings
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'apicolapp@gmail.com'
+EMAIL_HOST_PASSWORD = os.environ.get('GMAIL_PASS')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
 
