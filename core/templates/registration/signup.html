@@ -1,0 +1,21 @@
+{% extends 'core/layout.html' %}
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-warning">
+                <div class="card-body">
+                    <h3 class="orange">Creá una cuenta en Apicolapp</h3>
+                    <form method="post" action="{% url 'signup' %}">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+
+                        <input type="submit" value="Crear cuenta" class="btn btn-warning"/>
+                    </form>
+
+                    <p><a href="{% url 'login' %}">Ya tenes cuenta? Iniciá sesisón.</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
