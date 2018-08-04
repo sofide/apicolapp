@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'livereload',
-    # 'core',
     'user_manager',
     'apiary.app.ApiaryConfig',
     'accounting',
