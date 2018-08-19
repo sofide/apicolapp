@@ -14,7 +14,8 @@ class ApiaryForm(forms.Form):
 class HarvestForm(forms.ModelForm):
     class Meta:
         model = Harvest
-        fields = {
+        fields = '__all__'
+        labels = {
             'apiary': 'Apiario',
             'amount': 'Cantidad cosechada',
             'date': 'fecha'
