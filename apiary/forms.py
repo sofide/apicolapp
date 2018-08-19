@@ -8,4 +8,4 @@ class ApiaryForm(forms.Form):
     label = forms.CharField(max_length=200, label='Nombre del apiario')
     hives = forms.IntegerField(label='Cantidad de colmenas')
     nucs = forms.IntegerField(label='Cantidad de núcleos')
-    date = forms.DateField(initial=datetime.today())
+    date = forms.DateField(initial=datetime.today(), label='Fecha')
