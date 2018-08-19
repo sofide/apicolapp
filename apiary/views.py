@@ -4,8 +4,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 
-from apiary.models import Apiary, ApiaryStatus
-from apiary.forms import ApiaryForm
+from apiary.models import Apiary, ApiaryStatus, Harvest
+from apiary.forms import ApiaryForm, HarvestForm
 from apiary.data import apiary_history_table, apiary_history_chart
 
 
@@ -91,4 +91,34 @@ def apiary_detail(request, apiary_pk):
         'history_table': history_table,
         'div': div,
         'script': script,
+    })
+
+
+def harvest_list(request):
+    harvests = Harvest.objects.filter(apiary__owner=request.user)
+
+    return render(request, 'apiary/harvest_list.html', {'harvests':harvests})
+
+
+def harvest(request, harvest_pk=None):
+    if harvest_pk:
+        harvest_instance = get_object_or_404(Harvest, pk=harvest_pk)
+        if harvest_instance.apiary.owner != request.user:
+            return HttpResponseForbidden()
+    else:
+        harvest_instance = None
+
+    if request.method == 'POST':
+        form = HarvestForm(request.POST, instance=harvest_instance)
+
+        if form.is_valid():
+            harvest = form.save()
+
+            return redirect('harvest_list')
+    else:
+        form = HarvestForm(instance=harvest_instance)
+
+    form.fields['apiary'].queryset = Apiary.objects.filter(owner=request.user)
+    return render(request, 'apiary/harvest.html', {
+        'form': form, 'instance':harvest_instance
     })

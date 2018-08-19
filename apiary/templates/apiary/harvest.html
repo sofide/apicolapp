@@ -1,0 +1,38 @@
+{% extends 'core/layout.html' %}
+
+{% block content %}
+    <div class="row">
+        {% if error_message %}
+            <div class="col-12">
+                <div class="alert alert-danger" role="alert">
+                    {{ error_message }}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-warning">
+                <div class="card-body">
+                    {% if instance %}
+                        <h3 class="orange mb-3">Editá tu cosecha:</h3>
+                        <form action="{% url 'harvest_edit'  instance.pk %}" method="POST">
+                    {% else %}
+                        <h3 class="orange">Cargá una nueva cosecha:</h3>
+                        <form action="{% url 'harvest_new' %}" method="POST">
+                    {% endif %}
+
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <input type="submit" value="Guardar" class="btn btn-warning"/>
+                    </form>
+
+                    <a class="btn btn-outline-warning btn-lg" href="{% url 'harvest_list' %}">
+                        Volver a la lista de cosechas
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
