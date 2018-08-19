@@ -2,6 +2,7 @@ import datetime
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
 
 from apiary.models import Apiary, ApiaryStatus
 from apiary.forms import ApiaryForm
@@ -23,7 +24,7 @@ def apiary_abm(request, apiary_pk=None):
     if apiary_pk:
         apiary_instance = get_object_or_404(Apiary, pk=apiary_pk)
         if apiary_instance.owner != request.user:
-            return redirect('apiary_index')
+            return HttpResponseForbidden()
         apiary_data = {
             'label': apiary_instance.label,
             'nucs': apiary_instance.status.nucs,
@@ -79,6 +80,9 @@ def apiary_abm(request, apiary_pk=None):
 
 def apiary_detail(request, apiary_pk):
     apiary = get_object_or_404(Apiary, pk=apiary_pk)
+    if apiary.owner != request.user:
+        return HttpResponseForbidden()
+
     history_table = apiary_history_table(apiary)
     script, div = apiary_history_chart(history_table['body'], apiary.label)
 
