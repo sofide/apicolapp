@@ -66,14 +66,14 @@ def test_edit_apiary_is_working(client_logged_as_manolo, apiary_of_manolo):
     assert response.status_code == 200
 
 
-def test_edit_apiary_of_other_user_redirects(client_logged_as_manolo, apiary_of_samuel):
+def test_edit_apiary_of_other_user_forbidden(client_logged_as_manolo, apiary_of_samuel):
     """
-    Test if edit another user's apiary view is redirecting to apiary index.
+    Test if someone is trying to edit another user's apiary view it will have a
+    Forbidden response (code 403)
     """
     response = client_logged_as_manolo.get(reverse('apiary_edit', args=(apiary_of_samuel.pk,)))
 
-    assert response.status_code == 302
-    assert response.url == reverse('apiary_index')
+    assert response.status_code == 403
 
 
 def test_edit_apiary_is_editing_the_apiary(client_logged_as_manolo, apiary_of_manolo):
