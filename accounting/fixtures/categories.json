@@ -1,0 +1,74 @@
+[
+  {
+    "model": "accounting.category",
+    "pk": 1,
+    "fields": {
+      "label": "Alimentación",
+      "description": "Productos relacionados a la alimentación de las abejas.",
+      "depreciation_period": 0
+    }
+  },
+  {
+    "model": "accounting.category",
+    "pk": 2,
+    "fields": {
+      "label": "Sanidad",
+      "description": "Conceptos asociados a la higiene y salud del apiario.",
+      "depreciation_period": 0
+    }
+  },
+  {
+    "model": "accounting.category",
+    "pk": 3,
+    "fields": {
+      "label": "Material vivo",
+      "description": "Compras de material vivo.",
+      "depreciation_period": 3
+    }
+  },
+  {
+    "model": "accounting.category",
+    "pk": 4,
+    "fields": {
+      "label": "Material Inerte",
+      "description": "Compras de material inerte.",
+      "depreciation_period": 3 
+    }
+  },
+  {
+    "model": "accounting.category",
+    "pk": 5,
+    "fields": {
+      "label": "Logística",
+      "description": "Se incluyen gastos de tambores y combustible.",
+      "depreciation_period": 0
+    }
+  },
+  {
+    "model": "accounting.category",
+    "pk": 6,
+    "fields": {
+      "label": "Rodados",
+      "description": "Vehículos utilizados en la actividad.",
+      "depreciation_period": 5
+    }
+  },
+  {
+    "model": "accounting.category",
+    "pk": 7,
+    "fields": {
+      "label": "Instalaciones",
+      "description": "Galpones y bienes inmuebles utilizados en la actividad.",
+      "depreciation_period": 10
+    }
+  },
+  {
+    "model": "accounting.category",
+    "pk": 8,
+    "fields": {
+      "label": "Gastos varios",
+      "description": "Gastos no contemplados en las otras categorías",
+      "depreciation_period": 0
+    }
+  }
+]
