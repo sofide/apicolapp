@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 
+from accounting.manage_data import purchases_by_categories
 from accounting.models import Product, Purchase
 from accounting.forms import ProductForm, PurchaseForm
 

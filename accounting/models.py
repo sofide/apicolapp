@@ -43,7 +43,7 @@ class Purchase(models.Model):
     logged_datetime = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['date', 'product']
+        ordering = ['-date', 'product']
 
     def __str__(self):
         return '{} - {}'.format(self.date, self.product)

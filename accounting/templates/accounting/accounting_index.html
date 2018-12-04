@@ -39,6 +39,45 @@
 
         </div>
     </div>
+
+<div id="accordion">
+    {% for category_name, category_data in purchase.items %}
+      <div class="card">
+        <div class="card-header" id="headingOne">
+          <h5 class="mb-0">
+            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                {{ category_name }}
+            </button>
+          </h5>
+        </div>
+
+        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+          <div class="card-body">
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col" class="text-center">Producto</th>
+                            <th scope="col" class="text-center">Cantidad</th>
+                            <th scope="col" class="text-center">Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for product in category_data.products %}
+                        {% for purchase in product.purchases %}
+                            <tr>
+                                <th scope="row" class="text-center">{{ purchase.product }}</th>
+                                <td class="text-center">{{ purchase.amount }}</td>
+                                <td class="text-center">{{ purchase.date }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+</div>
     <div class="row">
         <div class="col">
             <a class="btn btn-outline-warning btn-lg mt-3" 
