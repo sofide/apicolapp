@@ -20,10 +20,11 @@ class Product(models.Model):
     """
     User products that are used in the beekeeping activities.
     """
-    name = models.CharField(max_length=200)
-    description = models.TextField()
+    name = models.CharField(max_length=200, verbose_name='nombre')
+    description = models.TextField(verbose_name='descripción')
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='products')
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products',
+                                 verbose_name='categoría')
 
     class Meta:
         ordering = ['category', 'name']
@@ -36,10 +37,11 @@ class Purchase(models.Model):
     """
     Product's purchases to track expenses.
     """
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='purchases')
-    date = models.DateField()
-    amount = models.FloatField()
-    value = models.FloatField()
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='purchases',
+                                verbose_name='producto')
+    date = models.DateField(verbose_name='fecha')
+    amount = models.FloatField(verbose_name='cantidad')
+    value = models.FloatField(verbose_name='monto pagado')
     logged_datetime = models.DateTimeField(auto_now=True)
 
     class Meta:
