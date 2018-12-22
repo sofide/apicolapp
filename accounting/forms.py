@@ -6,7 +6,7 @@ class ProductForm(ModelForm):
     '''form to create or edit a product'''
     class Meta:
         model = Product
-        fields = ['name', 'description']
+        fields = ['category', 'name', 'description']
 
 
 class PurchaseForm(ModelForm):

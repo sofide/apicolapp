@@ -39,7 +39,7 @@ def product_edit(request, product_pk=None):
 
             if product_form.is_valid():
                 new_product = product_form.save(commit=False)
-                new_product.owner = request.user
+                new_product.user = request.user
                 new_product.save()
 
                 return _next_page(new_product)
