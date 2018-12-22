@@ -21,6 +21,13 @@ def accounting_index(request):
     })
 
 
+def purchase_list(request):
+    purchases = purchases_by_categories(request.user.pk)
+
+    return render(request, 'accounting/purchases_list.html', {
+        'purchases': purchases,
+    })
+
 
 def product_index(request):
     pass

@@ -1,0 +1,67 @@
+
+{% extends 'core/layout.html' %}
+
+{% block content %}
+    <h1> Listado de compras e inversiones </h1>
+
+    <a class="btn btn-outline-warning btn-lg mt-3"
+       href="{% url 'purchase_product' %}">
+            Cargar una nueva compra
+    </a>
+
+    <hr/>
+
+    <div id="accordion">
+        {% for category_name, category_data in purchases.items %}
+          <div class="card">
+          <div class="card-header" id="heading_{{ category_data.slug }}" title="{{ category_data.description }}">
+              <button class="btn btn-link" data-toggle="collapse"
+                      data-target="#collapse_{{ category_data.slug }}" 
+                      aria-expanded="true" 
+                      aria-controls="collapse_{{ category_data.slug }}"
+                      style="color: black;"
+              >
+                          <h5 class="mb-0" style="color: black;">
+                              {{ category_name }}
+                              {% if category_data.amount %}
+                                <span class="badge badge-secondary">
+                                      ${{ category_data.amount }} 
+                                </span>
+                              {% endif %}
+                          </h5>
+                </button>
+            </div>
+
+            <div id="collapse_{{ category_data.slug}}" class="collapse" aria-labelledby="{{ category_data.slug }}" data-parent="#accordion">
+              <div class="card-body">
+                  {% if category_data.purchases %}
+                    <table class="table table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col" class="text-center">Producto</th>
+                                <th scope="col" class="text-center">Cantidad</th>
+                                <th scope="col" class="text-center">Monto</th>
+                                <th scope="col" class="text-center">Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for purchase in category_data.purchases %}
+                            <tr>
+                                <th scope="row" class="text-center">{{ purchase.product }}</th>
+                                <td class="text-center">{{ purchase.amount }}</td>
+                                <td class="text-center">{{ purchase.value }}</td>
+                                <td class="text-center">{{ purchase.date }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                        <p> No hay registros de compras en esta categoría </p>
+                    {% endif %}
+
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+    </div>
+{% endblock %}
