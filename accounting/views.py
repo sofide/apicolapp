@@ -1,14 +1,22 @@
+from django.db.models import Q, Sum
 from django.shortcuts import render, get_object_or_404, redirect
 
 from accounting.manage_data import purchases_by_categories
-from accounting.models import Product, Purchase
+from accounting.models import Product, Purchase, Category
 from accounting.forms import ProductForm, PurchaseForm
 
 
 def accounting_index(request):
-    purchases = Purchase.objects.all()
+    invested_money = Purchase.objects.filter(product__user=request.user).aggregate(Sum('value'))
+    sum_by_categories = Sum(
+        'products__purchases__value',
+        filter=Q(products__purchases__product__user=request.user)
+    )
+    purchases = Category.objects.annotate(money=sum_by_categories)
+
 
     return render(request, 'accounting/accounting_index.html', {
+        'invested_money': invested_money,
         'purchases': purchases,
     })
 
