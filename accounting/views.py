@@ -44,7 +44,7 @@ def product_edit(request, product_pk=None):
             return redirect('product_index')
 
     if product_pk:
-        product_instance = get_object_or_404(Product, pk=product_pk)
+        product_instance = get_object_or_404(Product, pk=product_pk, user=request.user)
     else:
         product_instance = None
 
@@ -69,7 +69,7 @@ def product_edit(request, product_pk=None):
 
 
 def purchase_product(request):
-    products = Product.objects.all()
+    products = Product.objects.filter(user=request.user)
 
     if products.exists():
         return render(request, 'accounting/purchase_product.html', {
@@ -83,7 +83,7 @@ def purchase_product(request):
 
 
 def purchase_detail(request, product_pk):
-    product = get_object_or_404(Product, pk=product_pk)
+    product = get_object_or_404(Product, pk=product_pk, user=request.user)
 
     if request.method == 'POST':
         purchase_form = PurchaseForm(request.POST)
