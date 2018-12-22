@@ -13,5 +13,5 @@ class PurchaseForm(ModelForm):
     '''form to create or edit an specific product's purchase'''
     class Meta:
         model = Purchase
-        fields = ['amount', 'date']
+        fields = ['amount', 'value', 'date']
 
