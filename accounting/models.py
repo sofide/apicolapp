@@ -64,3 +64,20 @@ class DepreciationInfo(models.Model):
 
     def __str__(self):
         return '{} - {}'.format(self.purchase.product, self.model_year)
+
+
+class Sale(models.Model):
+    """
+    Honey sale.
+    """
+    date = models.DateField(verbose_name='fecha')
+    amount = models.FloatField(verbose_name='cantidad en kg')
+    value = models.FloatField(verbose_name='monto facturado')
+    description = models.TextField(verbose_name='descripción')
+    logged_datetime = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-date', '-value']
+
+    def __str__(self):
+        return '{} - {} kg - ${}'.format(self.date, self.amount, self.value)
