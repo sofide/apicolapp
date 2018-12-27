@@ -74,6 +74,7 @@ class Sale(models.Model):
     amount = models.FloatField(verbose_name='cantidad en kg')
     value = models.FloatField(verbose_name='monto facturado')
     description = models.TextField(verbose_name='descripción')
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='sales')
     logged_datetime = models.DateTimeField(auto_now=True)
 
     class Meta:
