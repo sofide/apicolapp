@@ -7,6 +7,7 @@ from accounting.models import Product, Purchase, Category
 from accounting.forms import ProductForm, PurchaseForm, SaleForm
 
 
+@login_required
 def accounting_index(request):
     invested_money = Purchase.objects.filter(product__user=request.user).aggregate(Sum('value'))
     sum_by_categories = Sum(
@@ -22,6 +23,7 @@ def accounting_index(request):
     })
 
 
+@login_required
 def purchase_list(request):
     purchases = purchases_by_categories(request.user.pk)
 
@@ -34,6 +36,7 @@ def product_index(request):
     pass
 
 
+@login_required
 def product_edit(request, product_pk=None):
     '''create or edit a product'''
     def _next_page(product_object):
@@ -69,6 +72,7 @@ def product_edit(request, product_pk=None):
         })
 
 
+@login_required
 def purchase_product(request):
     products = Product.objects.filter(user=request.user)
 
@@ -83,6 +87,7 @@ def purchase_product(request):
         return response
 
 
+@login_required
 def purchase_detail(request, product_pk):
     product = get_object_or_404(Product, pk=product_pk, user=request.user)
 
