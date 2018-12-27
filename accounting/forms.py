@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from accounting.models import Product, Purchase
+from accounting.models import Product, Purchase, Sale
 
 
 class ProductForm(ModelForm):
@@ -15,3 +15,9 @@ class PurchaseForm(ModelForm):
         model = Purchase
         fields = ['amount', 'value', 'date']
 
+
+class SaleForm(ModelForm):
+    '''form to create or edit a sale'''
+    class Meta:
+        model = Sale
+        exclude = ['user', 'logged_datetime']

@@ -1,9 +1,10 @@
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q, Sum
 from django.shortcuts import render, get_object_or_404, redirect
 
 from accounting.manage_data import purchases_by_categories
 from accounting.models import Product, Purchase, Category
-from accounting.forms import ProductForm, PurchaseForm
+from accounting.forms import ProductForm, PurchaseForm, SaleForm
 
 
 def accounting_index(request):
@@ -102,4 +103,39 @@ def purchase_detail(request, product_pk):
     return render(request, 'accounting/purchase_detail.html', {
         'purchase_form': purchase_form,
         'product': product,
+    })
+
+
+@login_required
+def sales_list(request):
+    """
+    Show user's sales list.
+    """
+    sales = request.user.sales.all()
+
+    return render(request, 'accounting/sales_list.html', {
+        'sales': sales,
+    })
+
+
+@login_required
+def sale_new(request):
+    """
+    Save a new sale on the database.
+    """
+    if request.method == 'POST':
+        sale_form = SaleForm(request.POST)
+
+        if sale_form.is_valid():
+            new_sale = sale_form.save(commit=False)
+            new_sale.user = request.user
+            new_sale.save()
+
+            return redirect('sales_list')
+
+    else:
+        sale_form = SaleForm()
+
+    return render(request, 'accounting/sale_new.html', {
+        'sale_form': sale_form,
     })

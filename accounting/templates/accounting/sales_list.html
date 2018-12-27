@@ -1,0 +1,39 @@
+{% extends 'core/layout.html' %}
+
+{% block content %}
+    <h1> Listado de ventas de miel </h1>
+
+    <a class="btn btn-outline-warning btn-lg mt-3"
+       href="{% url 'sale_new' %}">
+            Cargar nueva venta
+    </a>
+
+    <hr/>
+
+
+  {% if sales %}
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col" class="text-center">Fecha</th>
+                <th scope="col" class="text-center">Kg</th>
+                <th scope="col" class="text-center">$</th>
+                <th scope="col" class="text-center">Descripción</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for sale in sales %}
+            <tr>
+                <th scope="row" class="text-center">{{ sale.date }}</th>
+                <td class="text-center">{{ sale.amount }}</td>
+                <td class="text-center">{{ sale.value }}</td>
+                <td class="text-center">{{ sale.description }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p> Aún no se ha cargado ninguna venta. </p>
+    {% endif %}
+
+{% endblock %}

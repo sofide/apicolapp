@@ -1,0 +1,38 @@
+{% extends 'core/layout.html' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h2></h2>
+        </div>
+    </div>
+    <div class="row">
+        {% if error_message %}
+            <div class="col-12">
+                <div class="alert alert-danger" role="alert">
+                    {{ error_message }}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-warning">
+                <div class="card-body">
+                    <h3 class="orange">Cargá los datos de tu venta</h3>
+                    <form action="{% url 'sale_new' %}" method="POST">
+
+                        {% csrf_token %}
+                        {{ sale_form.as_p }}
+                        <input type="submit" value="Guardar" class="btn btn-warning"/>
+                    </form>
+
+                    <a class="btn btn-outline-warning btn-lg" href="{% url 'apiary_index' %}">
+                        Ver mis ventas
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
