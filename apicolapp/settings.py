@@ -156,4 +156,4 @@ if os.environ.get('HEROKU', False):
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     MIDDLEWARE.insert(0, 'whitenoise.middleware.WhiteNoiseMiddleware')
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-    DEGUG = False
+    DEBUG = False
