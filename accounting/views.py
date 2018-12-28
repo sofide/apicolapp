@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q, Sum
+from django.db.models import Q, Sum, Prefetch
 from django.shortcuts import render, get_object_or_404, redirect
 
 from accounting.manage_data import purchases_by_categories
@@ -75,16 +75,18 @@ def product_edit(request, product_pk=None):
 @login_required
 def purchase_product(request):
     products = Product.objects.filter(user=request.user)
+    categories = Category.objects.prefetch_related(Prefetch('products', queryset=products))
 
     if products.exists():
-        return render(request, 'accounting/purchase_product.html', {
-            'products': products,
+        response = render(request, 'accounting/purchase_product.html', {
+            'categories': categories,
         })
     else:
         # edit redirect response to use new product in a purchase
         response = redirect('product_new')
         response['Location'] += '?next=purchase'
-        return response
+
+    return response
 
 
 @login_required

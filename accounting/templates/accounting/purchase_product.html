@@ -9,27 +9,30 @@
 </div>
 
 
-{% if products %}
-    <div class="row">
-        <div class="col">
-            <h3>Seleccioná el insumo o producto comprado</h3>
-            <div class="list-group">
-                {% for product in products %}
-                <a href="{% url 'purchase_detail' product.pk %}"
-                   class="list-group-item list-group-item-action">
-                        {{ product }}
-                </a>
-                {% endfor %}
-            </div>
-        </div>
+<div class="row">
+    <div class="col">
+        <h3>Seleccioná el insumo o producto comprado</h3>
+        {% for category in categories %}
+            {% if category.products.exists %}
+                <h5> {{ category.label }} </h5>
+                <div class="list-group">
+                    {% for product in category.products.all %}
+                    <a href="{% url 'purchase_detail' product.pk %}"
+                       class="list-group-item list-group-item-action">
+                            {{ product }}
+                    </a>
+                    {% endfor %}
+                </div>
+                <hr/>
+            {% endif %}
+        {% endfor %}
     </div>
-    <hr/>
-    <div class="row">
-        <div class="col">
-            <h3>O cargá un producto nuevo</h3>
-        </div>
+</div>
+<div class="row">
+    <div class="col">
+        <h3>O cargá un producto nuevo</h3>
     </div>
-{% endif %}
+</div>
 <div class="row">
     <div class="col">
         <a class="btn btn-outline-warning btn-lg mt-3" 
