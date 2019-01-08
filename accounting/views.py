@@ -1,25 +1,47 @@
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q, Sum, Prefetch
+from django.db.models import Q, Sum, Count, Prefetch
 from django.shortcuts import render, get_object_or_404, redirect
 
 from accounting.manage_data import purchases_by_categories
-from accounting.models import Product, Purchase, Category
+from accounting.models import Product, Purchase, Category, Sale
 from accounting.forms import ProductForm, PurchaseForm, SaleForm
 
 
 @login_required
 def accounting_index(request):
-    invested_money = Purchase.objects.filter(product__user=request.user).aggregate(Sum('value'))
+    '''
+    Show user's incomes and investments.
+    '''
+    # INVESTMENTS
+    purchases = Purchase.objects.filter(product__user=request.user).aggregate(
+        invested_money=Sum('value'),
+        total = Count('id'),
+        products=Count('product', distinct=True)
+    )
+
     sum_by_categories = Sum(
         'products__purchases__value',
         filter=Q(products__purchases__product__user=request.user)
     )
-    purchases = Category.objects.annotate(money=sum_by_categories)
+    purchases_detail = Category.objects.annotate(money=sum_by_categories)
 
+    # INCOMES
+    sales = Sale.objects.filter(user=request.user).aggregate(
+        total=Count('id'),
+        total_income=Sum('value'),
+        total_kg=Sum('amount'),
+    )
+
+
+    result = sales['total_income'] - purchases['invested_money']
+    profit = result > 0
 
     return render(request, 'accounting/accounting_index.html', {
-        'invested_money': invested_money,
         'purchases': purchases,
+        'purchases_detail': purchases_detail,
+        'sales': sales,
+        'result': result,
+        'profit': profit,
     })
 
 

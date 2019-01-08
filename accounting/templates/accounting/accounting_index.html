@@ -9,9 +9,46 @@
 </div>
 
 <div class="row">
-    <div class="col">
-        <h4 class="mt-5">Total de dinero invertido: ${{ invested_money.value__sum }}</h4>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Resultados</h4>
+                <p class="card-text"> Ganancia obtenida (Ingresos - Gastos) </p>
+                {% if profit %}
+                    <div style="color: green">
+                {% else %}
+                    <div style="color: red">
+                {% endif %}
+                        <h2 class="card-text text-center">${{ result }}</h2>
+                    </div>
+            </div>
+        </div>
     </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Ingresos</h4>
+                <p class="card-text">Se registraron {{ sales.total }} ventas por {{ sales.total_kg }}kg en total.</p>
+                <h5 class="card-text text-center">${{ sales.total_income }}</h5>
+                <div class="text-right">
+                    <a href="{% url 'sales_list' %}" class="btn btn-warning text-right">Ver detalle</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Gastos</h4>
+                <p class="card-text">Se registraron {{ purchases.total }} compras de {{ purchases.products }} productos distintos.</p>
+                <h5 class="card-text text-center">${{ purchases.invested_money }}</h5>
+                <div class="text-right">
+                    <a href="{% url 'purchase_list' %}" class="btn btn-warning text-right">Ver detalle</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <hr/>
@@ -35,7 +72,7 @@
 </div>
 <hr/>
 
-{% if purchases %}
+{% if purchases_detail %}
 
     <div class="row">
         <div class="col">
@@ -47,7 +84,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                {% for category in purchases %}
+                {% for category in purchases_detail %}
                     <tr title="{{ category.description }}">
                         <th scope="row" class="text-center">{{ category.label }}</th>
                         {% if category.money %}
