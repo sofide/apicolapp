@@ -2,9 +2,7 @@ from django.db import models
 
 
 class Category(models.Model):
-    """
-    Category of products, for example: vehicle, supply, etc.
-    """
+    """Category of products, for example: vehicle, supply, etc."""
     label = models.CharField(max_length=200)
     description = models.TextField()
     depreciation_period = models.IntegerField()
@@ -17,9 +15,7 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-    """
-    User products that are used in the beekeeping activities.
-    """
+    """User products that are used in the beekeeping activities.  """
     name = models.CharField(max_length=200, verbose_name='nombre')
     description = models.TextField(verbose_name='descripción')
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='products')
@@ -34,9 +30,7 @@ class Product(models.Model):
 
 
 class Purchase(models.Model):
-    """
-    Product's purchases to track expenses.
-    """
+    """Product's purchases to track expenses."""
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='purchases',
                                 verbose_name='producto')
     date = models.DateField(verbose_name='fecha')
@@ -67,9 +61,7 @@ class DepreciationInfo(models.Model):
 
 
 class Sale(models.Model):
-    """
-    Honey sale.
-    """
+    """Honey sale."""
     date = models.DateField(verbose_name='fecha')
     amount = models.FloatField(verbose_name='cantidad en kg')
     value = models.FloatField(verbose_name='monto facturado')

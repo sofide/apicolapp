@@ -7,9 +7,7 @@ from apiary.models import Apiary
 
 
 def test_apiary_index_is_working(client_logged_as_manolo, django_user_model):
-    """
-    Test if apiary_index view is working.
-    """
+    """Test if apiary_index view is working."""
     response = client_logged_as_manolo.get('/apiarios/')
     assert response.status_code == 200
 
@@ -18,18 +16,14 @@ def test_apiary_index_is_working(client_logged_as_manolo, django_user_model):
 
 
 def test_apiary_index_is_redirecting_if_not_logged(client, django_user_model):
-    """
-    Test if apiary_index is redirecting to login if user is not authenticated.
-    """
+    """Test if apiary_index is redirecting to login if user is not authenticated."""
     response = client.get('/apiarios/')
     assert response.status_code == 302
     assert response.url.startswith(reverse('login'))
 
 
 def test_manolo_has_apiaries(client_logged_as_manolo, the_twenty_apiaries_of_manolo):
-    """
-    Test if manolo's apiaries are sent to template.
-    """
+    """Test if manolo's apiaries are sent to template."""
     response = client_logged_as_manolo.get(reverse('apiary_index'))
 
     assert 'apiaries' in response.context
@@ -39,18 +33,14 @@ def test_manolo_has_apiaries(client_logged_as_manolo, the_twenty_apiaries_of_man
 
 
 def test_new_apiary_is_working(client_logged_as_manolo):
-    """
-    Test if new apiary view es working.
-    """
+    """Test if new apiary view es working."""
     response = client_logged_as_manolo.get(reverse('apiary_new'))
 
     assert response.status_code == 200
 
 
 def test_new_apiary_is_redirecting_if_user_isnt_logged(client):
-    """
-    Test if new_apiary redirects if user is not logged.
-    """
+    """Test if new_apiary redirects if user is not logged."""
     response = client.get(reverse('apiary_new'))
 
     assert response.status_code == 302
@@ -58,9 +48,7 @@ def test_new_apiary_is_redirecting_if_user_isnt_logged(client):
 
 
 def test_edit_apiary_is_working(client_logged_as_manolo, apiary_of_manolo):
-    """
-    Test if edit user's apiary view is working.
-    """
+    """Test if edit user's apiary view is working."""
     response = client_logged_as_manolo.get(reverse('apiary_edit', args=(apiary_of_manolo.pk,)))
 
     assert response.status_code == 200
@@ -77,9 +65,7 @@ def test_edit_apiary_of_other_user_forbidden(client_logged_as_manolo, apiary_of_
 
 
 def test_edit_apiary_is_editing_the_apiary(client_logged_as_manolo, apiary_of_manolo):
-    """
-    Test if apiary_edit view is editing the apiary.
-    """
+    """Test if apiary_edit view is editing the apiary."""
     old_hives = apiary_of_manolo.status.hives
 
     response = client_logged_as_manolo.post(reverse('apiary_edit', args=(apiary_of_manolo.pk,)), {
@@ -97,9 +83,7 @@ def test_edit_apiary_is_editing_the_apiary(client_logged_as_manolo, apiary_of_ma
 
 
 def test_new_apiary_is_creating_new_apiaries(client_logged_as_manolo, manolo_user):
-    """
-    Test if apiary_new view is creating a new apiary.
-    """
+    """Test if apiary_new view is creating a new apiary."""
     old_apiaries = Apiary.objects.filter(owner=manolo_user).count()
 
     response = client_logged_as_manolo.post(reverse('apiary_new'), {

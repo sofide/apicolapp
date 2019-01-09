@@ -9,9 +9,7 @@ from accounting.forms import ProductForm, PurchaseForm, SaleForm
 
 @login_required
 def accounting_index(request):
-    '''
-    Show user's incomes and investments.
-    '''
+    """Show user's incomes and investments."""
     # INVESTMENTS
     purchases = Purchase.objects.filter(product__user=request.user).aggregate(
         invested_money=Sum('value'),
@@ -60,9 +58,9 @@ def product_index(request):
 
 @login_required
 def product_edit(request, product_pk=None):
-    '''create or edit a product'''
+    """Create or edit a product."""
     def _next_page(product_object):
-        '''define next page if form is valid'''
+        """Define next page if form is valid."""
         next = request.GET.get('next', None)
         if next == 'purchase':
             return redirect('purchase_detail', product_pk=product_object.pk)
@@ -137,9 +135,7 @@ def purchase_detail(request, product_pk):
 
 @login_required
 def sales_list(request):
-    """
-    Show user's sales list.
-    """
+    """Show user's sales list."""
     sales = request.user.sales.all()
 
     return render(request, 'accounting/sales_list.html', {
@@ -149,9 +145,7 @@ def sales_list(request):
 
 @login_required
 def sale_new(request):
-    """
-    Save a new sale on the database.
-    """
+    """Save a new sale on the database."""
     if request.method == 'POST':
         sale_form = SaleForm(request.POST)
 
