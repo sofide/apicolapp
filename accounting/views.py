@@ -3,8 +3,8 @@ from django.db.models import Q, Sum, Count, Prefetch
 from django.shortcuts import render, get_object_or_404, redirect
 
 from accounting.manage_data import purchases_by_categories
-from accounting.models import Product, Purchase, Category, Sale
-from accounting.forms import ProductForm, PurchaseForm, SaleForm
+from accounting.models import Product, Purchase, Category, Sale, DepreciationInfo
+from accounting.forms import ProductForm, PurchaseForm, PurchaseDepreciationForm, SaleForm
 
 
 @login_required
@@ -94,6 +94,9 @@ def product_edit(request, product_pk=None):
 
 @login_required
 def purchase_product(request):
+    """First purchase step.
+    Select the product from historical purchases or load a new product.
+    """
     products = Product.objects.filter(user=request.user)
     categories = Category.objects.prefetch_related(Prefetch('products', queryset=products))
 
@@ -111,10 +114,18 @@ def purchase_product(request):
 
 @login_required
 def purchase_detail(request, product_pk):
+    """Second purchase step.
+    Ask user for purchase information.
+    If the product belongs to a category with depreciation, user must add the year of the model.
+    """
     product = get_object_or_404(Product, pk=product_pk, user=request.user)
+    if product.category.depreciation_period:
+        ViewForm = PurchaseDepreciationForm
+    else:
+        ViewForm = PurchaseForm
 
     if request.method == 'POST':
-        purchase_form = PurchaseForm(request.POST)
+        purchase_form = ViewForm(request.POST)
 
         if purchase_form.is_valid():
             new_purchase = purchase_form.save(commit=False)
@@ -122,10 +133,17 @@ def purchase_detail(request, product_pk):
             new_purchase.product = product
             new_purchase.save()
 
+            # save depreciation info if applicable
+            if purchase_form.data.get('model_year'):
+                DepreciationInfo.objects.create(
+                    purchase=new_purchase,
+                    model_year=purchase_form.data.get('model_year')
+                )
+
             return redirect('accounting_index')
 
     else:
-        purchase_form = PurchaseForm()
+        purchase_form = ViewForm()
 
     return render(request, 'accounting/purchase_detail.html', {
         'purchase_form': purchase_form,
