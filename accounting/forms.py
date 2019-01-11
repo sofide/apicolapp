@@ -1,4 +1,4 @@
-from django.forms import ModelForm, IntegerField
+from django.forms import ModelForm, IntegerField, DateField, DateInput
 from accounting.models import Product, Purchase, Sale
 
 
@@ -14,6 +14,8 @@ class PurchaseForm(ModelForm):
     class Meta:
         model = Purchase
         fields = ['amount', 'value', 'date']
+
+        widgets = {'date': DateInput(attrs={'id': 'purchase_datepicker'})}
 
 
 class PurchaseDepreciationForm(PurchaseForm):

@@ -10,6 +10,8 @@
         <link rel="stylesheet" href="{% static 'vendor/bokeh/css/bokeh-0.12.16.min.css' %}">
         <link rel="stylesheet" href="{% static 'vendor/bokeh/css/bokeh-widgets-0.12.16.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        {% block extra_css%}
+        {% endblock %}
 
         <!--boostrap mobile -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -91,5 +93,7 @@
         <script src="{% static 'vendor/bokeh/js/bokeh-0.12.16.min.js' %}"></script>
         <script src="{% static 'vendor/bokeh/js/bokeh-api-0.12.16.min.js' %}"></script>
         <script src="{% static 'vendor/bokeh/js/bokeh-widgets-0.12.16.min.js' %}"></script>
+        {% block extra_js %}
+        {% endblock %}
     </body>
 </html>
