@@ -1,17 +1,36 @@
+from datetime import datetime, timedelta
+
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q, Sum, Count, Prefetch
 from django.shortcuts import render, get_object_or_404, redirect
 
+from accounting import forms
 from accounting.manage_data import purchases_by_categories
 from accounting.models import Product, Purchase, Category, Sale, DepreciationInfo
-from accounting.forms import ProductForm, PurchaseForm, PurchaseDepreciationForm, SaleForm
 
 
 @login_required
 def accounting_index(request):
-    """Show user's incomes and investments."""
+    """
+    Show user's incomes and investments from last year, or between from_date
+    and to_date recived in POST params.
+    """
+    # defaults from_date and to_date params
+    to_date = datetime.now().date()
+    one_year = timedelta(days=365)
+    from_date = to_date - one_year
+
+    if request.method == 'POST':
+        dates_form = forms.DateFromToForm(request.POST)
+        if dates_form.is_valid():
+            to_date = dates_form.cleaned_data['to_date']
+            from_date = dates_form.cleaned_data['from_date']
+
     # INVESTMENTS
-    purchases = Purchase.objects.filter(product__user=request.user).aggregate(
+    purchases = Purchase.objects.filter(
+        product__user=request.user,
+        date__range=(from_date, to_date)
+    ).aggregate(
         invested_money=Sum('value'),
         total = Count('id'),
         products=Count('product', distinct=True)
@@ -19,12 +38,18 @@ def accounting_index(request):
 
     sum_by_categories = Sum(
         'products__purchases__value',
-        filter=Q(products__purchases__product__user=request.user)
+        filter=Q(
+            products__purchases__product__user=request.user,
+            products__purchases__date__range=(from_date, to_date)
+        )
     )
     purchases_detail = Category.objects.annotate(money=sum_by_categories)
 
     # INCOMES
-    sales = Sale.objects.filter(user=request.user).aggregate(
+    sales = Sale.objects.filter(
+        user=request.user,
+        date__range=(from_date, to_date)
+    ).aggregate(
         total=Count('id'),
         total_income=Sum('value'),
         total_kg=Sum('amount'),
@@ -74,7 +99,7 @@ def product_edit(request, product_pk=None):
 
     if request.user.is_authenticated:
         if request.method == 'POST':
-            product_form = ProductForm(request.POST, instance=product_instance)
+            product_form = forms.ProductForm(request.POST, instance=product_instance)
 
             if product_form.is_valid():
                 new_product = product_form.save(commit=False)
@@ -84,7 +109,7 @@ def product_edit(request, product_pk=None):
                 return _next_page(new_product)
 
         else:
-            product_form = ProductForm(instance=product_instance)
+            product_form = forms.ProductForm(instance=product_instance)
 
         return render(request, 'accounting/product_edit.html', {
             'product_form': product_form,
@@ -120,9 +145,9 @@ def purchase_detail(request, product_pk):
     """
     product = get_object_or_404(Product, pk=product_pk, user=request.user)
     if product.category.depreciation_period:
-        ViewForm = PurchaseDepreciationForm
+        ViewForm = forms.PurchaseDepreciationForm
     else:
-        ViewForm = PurchaseForm
+        ViewForm = forms.PurchaseForm
 
     if request.method == 'POST':
         purchase_form = ViewForm(request.POST)
@@ -165,7 +190,7 @@ def sales_list(request):
 def sale_new(request):
     """Save a new sale on the database."""
     if request.method == 'POST':
-        sale_form = SaleForm(request.POST)
+        sale_form = forms.SaleForm(request.POST)
 
         if sale_form.is_valid():
             new_sale = sale_form.save(commit=False)
@@ -175,7 +200,7 @@ def sale_new(request):
             return redirect('sales_list')
 
     else:
-        sale_form = SaleForm()
+        sale_form = forms.SaleForm()
 
     return render(request, 'accounting/sale_new.html', {
         'sale_form': sale_form,
