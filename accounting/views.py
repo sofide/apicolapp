@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q, Sum, Count, Prefetch
+from django.db.models.functions import Coalesce
 from django.shortcuts import render, get_object_or_404, redirect
 
 from accounting import forms
@@ -33,9 +34,9 @@ def accounting_index(request):
         product__user=request.user,
         date__range=(from_date, to_date)
     ).aggregate(
-        invested_money=Sum('value'),
-        total = Count('id'),
-        products=Count('product', distinct=True)
+        invested_money=Coalesce(Sum('value'), 0),
+        total=Coalesce(Count('id'), 0),
+        products=Coalesce(Count('product', distinct=True), 0)
     )
 
     sum_by_categories = Sum(
@@ -52,9 +53,9 @@ def accounting_index(request):
         user=request.user,
         date__range=(from_date, to_date)
     ).aggregate(
-        total=Count('id'),
-        total_income=Sum('value'),
-        total_kg=Sum('amount'),
+        total=Coalesce(Count('id'), 0),
+        total_income=Coalesce(Sum('value'), 0),
+        total_kg=Coalesce(Sum('amount'), 0)
     )
 
 
