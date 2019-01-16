@@ -33,15 +33,3 @@ class SaleForm(forms.ModelForm):
 class DateFromToForm(forms.Form):
     from_date = forms.DateField(label='Desde')
     to_date = forms.DateField(label='Hasta')
-
-    class Meta:
-        widgets = {'from_date': forms.DateInput(attrs={'id': 'from_datepicker'})}
-        widgets = {'to_date': forms.DateInput(attrs={'id': 'to_datepicker'})}
-
-    def clean(self):
-        cleaned_data = super().clean()
-        from_date = cleaned_data.get("from_date")
-        to_date = cleaned_data.get("to_date")
-
-        if from_date < to_date:
-            forms.ValidationError('La fecha "hasta" no puede ser menor a la fecha "desde".')
