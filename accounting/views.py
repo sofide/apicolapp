@@ -25,6 +25,8 @@ def accounting_index(request):
         if dates_form.is_valid():
             to_date = dates_form.cleaned_data['to_date']
             from_date = dates_form.cleaned_data['from_date']
+    else:
+        dates_form = forms.DateFromToForm()
 
     # INVESTMENTS
     purchases = Purchase.objects.filter(
@@ -60,6 +62,9 @@ def accounting_index(request):
     profit = result > 0
 
     return render(request, 'accounting/accounting_index.html', {
+        'from_date': from_date,
+        'to_date': to_date,
+        'dates_form': dates_form,
         'purchases': purchases,
         'purchases_detail': purchases_detail,
         'sales': sales,

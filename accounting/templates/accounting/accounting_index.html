@@ -1,12 +1,26 @@
 {% extends 'core/layout.html' %}
+{% load staticfiles %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'vendor/bootsrap/css/bootstrap-datepicker.min.css' %}">
+{% endblock %}
 
 {% block content %}
 
 <div class="row">
     <div class="col">
         <h1 class="orange">Gestión de la actividad</h1>
+        <p> Se muestran los datos desde {{ from_date }} hasta {{ to_date }}.</p>
+        <p> Seleccioná otro rango de fechas: </p>
+        <form action="{% url 'accounting_index' %}" autocomplete="off" method="POST">
+            {% csrf_token %}
+            {{ dates_form }}
+            <input type="submit" value="Cargar fecha" class="btn btn-warning"/>
+        </form>
     </div>
 </div>
+
+<hr/>
 
 <div class="row">
     <div class="col-md-4">
@@ -102,4 +116,25 @@
 
 {% endif %}
 
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'vendor/bootsrap/js/bootstrap-datepicker.min.js' %}"></script>
+    <script src="{% static 'vendor/bootsrap/js/bootstrap-datepicker.es.min.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+          var from_date_input=$('input[id="id_from_date"]');
+          var to_date_input=$('input[id="id_to_date"]');
+          var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+          var options={
+            format: 'dd/mm/yyyy',
+            container: container,
+            todayHighlight: true,
+            language: 'es',
+            autoclose: true,
+          };
+          from_date_input.datepicker(options);
+          to_date_input.datepicker(options);
+        })
+    </script>
 {% endblock %}
