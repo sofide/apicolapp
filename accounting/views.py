@@ -83,6 +83,7 @@ def accounting_index(request):
         'sales': sales,
         'result': result,
         'profit': profit,
+        'datepicker_fields_ids': ['id_from_date', 'id_to_date'],
     })
 
 
