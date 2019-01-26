@@ -10,7 +10,7 @@
             <div class="card border-warning">
                 <div class="card-body">
                     <h3 class="orange">Compra de {{ product }}</h3>
-                    <form action="{% url 'purchase_detail' product.pk %}" method="POST">
+                    <form action="{% url 'purchase_detail' product.pk %}" method="POST" autocomplete="off">
                         {% csrf_token %}
                         {{ purchase_form.as_p }}
                         <input type="submit" value="Cargar compra" class="btn btn-warning"/>
