@@ -21,10 +21,10 @@
                 <div class="card-body">
                     {% if instance %}
                         <h3 class="orange mb-3">Actualizá tu apiario:</h3>
-                        <form action="{% url 'apiary_edit'  instance.pk %}" method="POST">
+                        <form action="{% url 'apiary_edit'  instance.pk %}" method="POST" autocomplete="off">
                     {% else %}
                         <h3 class="orange">Cargá un nuevo apiario:</h3>
-                        <form action="{% url 'apiary_new' %}" method="POST">
+                        <form action="{% url 'apiary_new' %}" method="POST" autocomplete="off">
                     {% endif %}
 
                         {% csrf_token %}
@@ -40,4 +40,11 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block extra_css %}
+    {% include "core/datepickerform-css.html" %}
+{% endblock %}
+{% block extra_js %}
+    {% include "core/datepickerform-js.html" %}
 {% endblock %}
