@@ -15,7 +15,7 @@ class PurchaseForm(forms.ModelForm):
         model = Purchase
         fields = ['amount', 'value', 'date']
 
-        widgets = {'date': forms.DateInput(attrs={'id': 'purchase_datepicker'})}
+        widgets = {'date': forms.DateInput(attrs={'id': 'datepicker_field'})}
 
 
 class PurchaseDepreciationForm(PurchaseForm):

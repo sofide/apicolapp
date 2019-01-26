@@ -1,9 +1,4 @@
 {% extends 'core/layout.html' %}
-{% load staticfiles %}
-
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static 'vendor/bootsrap/css/bootstrap-datepicker.min.css' %}">
-{% endblock %}
 {% block content %}
     <div class="row">
         <div class="col-12">
@@ -21,21 +16,9 @@
     </div>
 {% endblock %}
 
+{% block extra_css %}
+    {% include "core/datepickerform-css.html" %}
+{% endblock %}
 {% block extra_js %}
-    <script src="{% static 'vendor/bootsrap/js/bootstrap-datepicker.min.js' %}"></script>
-    <script src="{% static 'vendor/bootsrap/js/bootstrap-datepicker.es.min.js' %}"></script>
-    <script>
-        $(document).ready(function(){
-          var date_input=$('input[id="purchase_datepicker"]');
-          var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
-          var options={
-            format: 'dd/mm/yyyy',
-            container: container,
-            todayHighlight: true,
-            language: 'es',
-            autoclose: true,
-          };
-          date_input.datepicker(options);
-        })
-    </script>
+    {% include "core/datepickerform-js.html" %}
 {% endblock %}
