@@ -20,7 +20,7 @@
             <div class="card border-warning">
                 <div class="card-body">
                     <h3 class="orange">Cargá los datos de tu venta</h3>
-                    <form action="{% url 'sale_new' %}" method="POST">
+                    <form action="{% url 'sale_new' %}" method="POST" autocomplete="off">
 
                         {% csrf_token %}
                         {{ sale_form.as_p }}
@@ -35,4 +35,11 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block extra_css %}
+    {% include "core/datepickerform-css.html" %}
+{% endblock %}
+{% block extra_js %}
+    {% include "core/datepickerform-js.html" %}
 {% endblock %}

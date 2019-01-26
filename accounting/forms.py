@@ -28,6 +28,7 @@ class SaleForm(forms.ModelForm):
     class Meta:
         model = Sale
         exclude = ['user', 'logged_datetime']
+        widgets = {'date': forms.DateInput(attrs={'id': 'datepicker_field'})}
 
 
 class DateFromToForm(forms.Form):
