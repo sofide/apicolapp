@@ -10,11 +10,12 @@ from accounting.manage_data import purchases_by_categories
 from accounting.models import Product, Purchase, Category, Sale, DepreciationInfo
 
 
-@login_required
-def accounting_index(request):
+def dates_form_processor(request):
     """
-    Show user's incomes and investments from last year, or between from_date
-    and to_date recived in POST params.
+    Use this function inside a view to process DateFromToForm data.
+    Return from_date, to_date and an instance of DateFromToForm.
+
+    THIS FUNCTION IS NOT A VIEW
     """
     # defaults from_date and to_date params
     to_date = datetime.now().date()
@@ -28,6 +29,17 @@ def accounting_index(request):
             from_date = dates_form.cleaned_data['from_date']
     else:
         dates_form = forms.DateFromToForm()
+
+    return from_date, to_date, dates_form
+
+
+@login_required
+def accounting_index(request):
+    """
+    Show user's incomes and investments from last year, or between from_date
+    and to_date recived in POST params.
+    """
+    from_date, to_date, dates_form = dates_form_processor(request)
 
     # INVESTMENTS
     purchases = Purchase.objects.filter(
@@ -76,10 +88,14 @@ def accounting_index(request):
 
 @login_required
 def purchase_list(request):
-    purchases = purchases_by_categories(request.user.pk)
+    from_date, to_date, dates_form = dates_form_processor(request)
+    purchases = purchases_by_categories(request.user.pk, from_date, to_date)
 
     return render(request, 'accounting/purchases_list.html', {
         'purchases': purchases,
+        'from_date': from_date,
+        'to_date': to_date,
+        'dates_form': dates_form,
     })
 
 

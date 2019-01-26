@@ -9,7 +9,7 @@ from django.utils.text import slugify
 from accounting.models import Category, Product, Purchase
 
 
-def purchases_by_categories(user_id):
+def purchases_by_categories(user_id, from_date, to_date):
     """
     Group purchases by categories. Returns a dict with the following structure:
     {
@@ -22,8 +22,17 @@ def purchases_by_categories(user_id):
         }
     }
     """
-    purchases = Purchase.objects.filter(product__user__pk=user_id)
-    category_amount = Sum('products__purchases__value', filter=Q(products__user__pk=user_id))
+    purchases = Purchase.objects.filter(
+        product__user__pk=user_id,
+        date__range=(from_date, to_date)
+    )
+    category_amount = Sum(
+        'products__purchases__value',
+        filter=Q(
+            products__user__pk=user_id,
+            products__purchases__date__range=(from_date, to_date)
+        )
+    )
     categories = Category.objects.all().annotate(amount=category_amount)
 
     grouped_purchases = {}

@@ -1,8 +1,19 @@
-
 {% extends 'core/layout.html' %}
+{% load staticfiles %}
 
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'vendor/bootsrap/css/bootstrap-datepicker.min.css' %}">
+
+{% endblock %}
 {% block content %}
     <h1> Listado de compras e inversiones </h1>
+        <p> Se muestran los datos desde {{ from_date }} hasta {{ to_date }}.</p>
+        <p> Seleccioná otro rango de fechas: </p>
+        <form action="{% url 'purchase_list' %}" autocomplete="off" method="POST">
+            {% csrf_token %}
+            {{ dates_form }}
+            <input type="submit" value="Cargar fecha" class="btn btn-warning"/>
+        </form>
 
     <a class="btn btn-outline-warning btn-lg mt-3"
        href="{% url 'purchase_product' %}">
@@ -56,7 +67,7 @@
                         </tbody>
                     </table>
                     {% else %}
-                        <p> No hay registros de compras en esta categoría </p>
+                        <p> No hay registros de compras en esta categoría para el período seleccionado.</p>
                     {% endif %}
 
               </div>
@@ -64,4 +75,25 @@
           </div>
         {% endfor %}
     </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'vendor/bootsrap/js/bootstrap-datepicker.min.js' %}"></script>
+    <script src="{% static 'vendor/bootsrap/js/bootstrap-datepicker.es.min.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+          var from_date_input=$('input[id="id_from_date"]');
+          var to_date_input=$('input[id="id_to_date"]');
+          var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+          var options={
+            format: 'dd/mm/yyyy',
+            container: container,
+            todayHighlight: true,
+            language: 'es',
+            autoclose: true,
+          };
+          from_date_input.datepicker(options);
+          to_date_input.datepicker(options);
+        })
+    </script>
 {% endblock %}
