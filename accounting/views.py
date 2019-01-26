@@ -96,6 +96,7 @@ def purchase_list(request):
         'from_date': from_date,
         'to_date': to_date,
         'dates_form': dates_form,
+        'datepicker_fields_ids': ['id_from_date', 'id_to_date'],
     })
 
 

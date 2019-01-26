@@ -5,16 +5,24 @@
     <script src="{% static 'vendor/bootsrap/js/bootstrap-datepicker.es.min.js' %}"></script>
     <script>
         $(document).ready(function(){
-          var date_input=$('input[id="datepicker_field"]');
-          var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
-          var options={
-            format: 'dd/mm/yyyy',
-            container: container,
-            todayHighlight: true,
-            language: 'es',
-            autoclose: true,
-          };
-          date_input.datepicker(options);
+            var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+            var options={
+                format: 'dd/mm/yyyy',
+                container: container,
+                todayHighlight: true,
+                language: 'es',
+                autoclose: true,
+            };
+
+            {% if datepicker_fields_ids %}
+                {% for field_id in datepicker_fields_ids %}
+                    var {{ field_id }}=$('input[id="{{ field_id }}"]');
+                    {{ field_id }}.datepicker(options);
+                {% endfor %}
+            {% else %}
+                var date_input=$('input[id="datepicker_field"]');
+                date_input.datepicker(options);
+            {% endif %}
         })
     </script>
 {% endblock %}
