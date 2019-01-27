@@ -27,6 +27,7 @@
                 <th scope="col" class="text-center">Kg</th>
                 <th scope="col" class="text-center">$</th>
                 <th scope="col" class="text-center">Descripción</th>
+                <th scope="col" class="text-center"></th>
             </tr>
         </thead>
         <tbody>
@@ -36,6 +37,7 @@
                 <td class="text-center">{{ sale.amount }}</td>
                 <td class="text-center">{{ sale.value }}</td>
                 <td class="text-center">{{ sale.description }}</td>
+                <td class="text-center"><a href="{% url 'sale_edit' sale.pk %}">editar</a></td>
             </tr>
         {% endfor %}
         </tbody>

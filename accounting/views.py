@@ -216,10 +216,15 @@ def sales_list(request):
 
 
 @login_required
-def sale_new(request):
+def sale_new(request, sale_pk=None):
     """Save a new sale on the database."""
+    if sale_pk:
+        sale_instance = get_object_or_404(Sale, pk=sale_pk)
+    else:
+        sale_instance = None
+
     if request.method == 'POST':
-        sale_form = forms.SaleForm(request.POST)
+        sale_form = forms.SaleForm(request.POST, instance=sale_instance)
 
         if sale_form.is_valid():
             new_sale = sale_form.save(commit=False)
@@ -229,7 +234,7 @@ def sale_new(request):
             return redirect('sales_list')
 
     else:
-        sale_form = forms.SaleForm()
+        sale_form = forms.SaleForm(instance=sale_instance)
 
     return render(request, 'accounting/sale_new.html', {
         'sale_form': sale_form,
