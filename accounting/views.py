@@ -22,8 +22,8 @@ def dates_form_processor(request):
     one_year = timedelta(days=365)
     from_date = to_date - one_year
 
-    if request.method == 'POST':
-        dates_form = forms.DateFromToForm(request.POST)
+    if request.GET.get('from_date'):
+        dates_form = forms.DateFromToForm(request.GET)
         if dates_form.is_valid():
             to_date = dates_form.cleaned_data['to_date']
             from_date = dates_form.cleaned_data['from_date']

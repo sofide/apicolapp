@@ -4,8 +4,7 @@
     <h1> Listado de compras e inversiones </h1>
         <p> Se muestran los datos desde {{ from_date }} hasta {{ to_date }}.</p>
         <p> Seleccioná otro rango de fechas: </p>
-        <form action="{% url 'purchase_list' %}" autocomplete="off" method="POST">
-            {% csrf_token %}
+        <form action="{% url 'purchase_list' %}" autocomplete="off" method="GET">
             {{ dates_form }}
             <input type="submit" value="Cargar fecha" class="btn btn-warning"/>
         </form>
