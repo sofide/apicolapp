@@ -203,10 +203,15 @@ def purchase_detail(request, product_pk):
 @login_required
 def sales_list(request):
     """Show user's sales list."""
-    sales = request.user.sales.all()
+    from_date, to_date, dates_form = dates_form_processor(request)
+    sales = request.user.sales.filter(date__range=(from_date, to_date))
 
     return render(request, 'accounting/sales_list.html', {
         'sales': sales,
+        'from_date': from_date,
+        'to_date': to_date,
+        'dates_form': dates_form,
+        'datepicker_fields_ids': ['id_from_date', 'id_to_date'],
     })
 
 
