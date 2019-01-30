@@ -47,6 +47,7 @@
                                 <th scope="col" class="text-center">Cantidad</th>
                                 <th scope="col" class="text-center">Monto</th>
                                 <th scope="col" class="text-center">Fecha</th>
+                                <th scope="col" class="text-center"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -56,6 +57,9 @@
                                 <td class="text-center">{{ purchase.amount }}</td>
                                 <td class="text-center">{{ purchase.value }}</td>
                                 <td class="text-center">{{ purchase.date }}</td>
+                                <td class="text-center"><a href="{% url 'purchase_detail_edit' purchase.pk purchase.product.pk %}">
+                                    editar
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>

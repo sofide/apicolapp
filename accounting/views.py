@@ -162,19 +162,24 @@ def purchase_product(request):
 
 
 @login_required
-def purchase_detail(request, product_pk):
+def purchase_detail(request, product_pk, purchase_pk=None):
     """Second purchase step.
     Ask user for purchase information.
     If the product belongs to a category with depreciation, user must add the year of the model.
     """
     product = get_object_or_404(Product, pk=product_pk, user=request.user)
+
+    purchase_instance = None
+    if purchase_pk:
+        purchase_instance = get_object_or_404(Purchase, pk=purchase_pk, product=product)
+
     if product.category.depreciation_period:
         ViewForm = forms.PurchaseDepreciationForm
     else:
         ViewForm = forms.PurchaseForm
 
     if request.method == 'POST':
-        purchase_form = ViewForm(request.POST)
+        purchase_form = ViewForm(request.POST, instance=purchase_instance)
 
         if purchase_form.is_valid():
             new_purchase = purchase_form.save(commit=False)
@@ -189,14 +194,15 @@ def purchase_detail(request, product_pk):
                     model_year=purchase_form.data.get('model_year')
                 )
 
-            return redirect('accounting_index')
+            return redirect('purchase_list')
 
     else:
-        purchase_form = ViewForm()
+        purchase_form = ViewForm(instance=purchase_instance)
 
     return render(request, 'accounting/purchase_detail.html', {
         'purchase_form': purchase_form,
         'product': product,
+        'purchase_instance': purchase_instance,
     })
 
 
