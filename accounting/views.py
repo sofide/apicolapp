@@ -238,4 +238,5 @@ def sale_new(request, sale_pk=None):
 
     return render(request, 'accounting/sale_new.html', {
         'sale_form': sale_form,
+        'sale_instance': sale_instance,
     })
