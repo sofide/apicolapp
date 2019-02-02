@@ -233,3 +233,10 @@ def sale_new(request, sale_pk=None):
         'sale_form': sale_form,
         'sale_instance': sale_instance,
     })
+
+
+@login_required
+def sale_delete(request, sale_pk):
+    sale = get_object_or_404(Sale, pk=sale_pk)
+    sale.delete()
+    return redirect('sales_list')
