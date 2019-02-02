@@ -9,4 +9,3 @@ class PurchaseAdmin(admin.ModelAdmin):
 admin.site.register(models.Product)
 admin.site.register(models.Purchase, PurchaseAdmin)
 admin.site.register(models.Category)
-admin.site.register(models.DepreciationInfo)

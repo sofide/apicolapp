@@ -45,21 +45,6 @@ class Purchase(models.Model):
         return '{} - {}'.format(self.date, self.product)
 
 
-class DepreciationInfo(models.Model):
-    """
-    'Purchase' extra info, to calculate depreciation of products
-    that are in categories with depreciation_period.
-    """
-    purchase = models.OneToOneField(Purchase, on_delete=models.CASCADE)
-    model_year = models.IntegerField()
-
-    class Meta:
-        ordering = ['purchase']
-
-    def __str__(self):
-        return '{} - {}'.format(self.purchase.product, self.model_year)
-
-
 class Sale(models.Model):
     """Honey sale."""
     date = models.DateField(verbose_name='fecha')

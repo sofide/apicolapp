@@ -18,11 +18,6 @@ class PurchaseForm(forms.ModelForm):
         widgets = {'date': forms.DateInput(attrs={'id': 'datepicker_field'})}
 
 
-class PurchaseDepreciationForm(PurchaseForm):
-    """Purchase form with extra fields for depreciation info."""
-    model_year = forms.IntegerField(min_value=1900)
-
-
 class SaleForm(forms.ModelForm):
     """Form to create or edit a sale."""
     class Meta:

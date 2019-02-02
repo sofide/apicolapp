@@ -7,7 +7,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 
 from accounting import forms
 from accounting.manage_data import purchases_by_categories
-from accounting.models import Product, Purchase, Category, Sale, DepreciationInfo
+from accounting.models import Product, Purchase, Category, Sale
 
 
 def dates_form_processor(request):
@@ -165,7 +165,6 @@ def purchase_product(request):
 def purchase_detail(request, product_pk, purchase_pk=None):
     """Second purchase step.
     Ask user for purchase information.
-    If the product belongs to a category with depreciation, user must add the year of the model.
     """
     product = get_object_or_404(Product, pk=product_pk, user=request.user)
 
@@ -173,13 +172,8 @@ def purchase_detail(request, product_pk, purchase_pk=None):
     if purchase_pk:
         purchase_instance = get_object_or_404(Purchase, pk=purchase_pk, product=product)
 
-    if product.category.depreciation_period:
-        ViewForm = forms.PurchaseDepreciationForm
-    else:
-        ViewForm = forms.PurchaseForm
-
     if request.method == 'POST':
-        purchase_form = ViewForm(request.POST, instance=purchase_instance)
+        purchase_form = forms.PurchaseForm(request.POST, instance=purchase_instance)
 
         if purchase_form.is_valid():
             new_purchase = purchase_form.save(commit=False)
@@ -187,17 +181,10 @@ def purchase_detail(request, product_pk, purchase_pk=None):
             new_purchase.product = product
             new_purchase.save()
 
-            # save depreciation info if applicable
-            if purchase_form.data.get('model_year'):
-                DepreciationInfo.objects.create(
-                    purchase=new_purchase,
-                    model_year=purchase_form.data.get('model_year')
-                )
-
             return redirect('purchase_list')
 
     else:
-        purchase_form = ViewForm(instance=purchase_instance)
+        purchase_form = forms.PurchaseForm(instance=purchase_instance)
 
     return render(request, 'accounting/purchase_detail.html', {
         'purchase_form': purchase_form,
