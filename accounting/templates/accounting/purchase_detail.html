@@ -1,20 +1,35 @@
 {% extends 'core/layout.html' %}
 {% block content %}
-    <div class="row">
-        <div class="col-12">
-            <div class="card border-warning">
-                <div class="card-body">
-                    <h3 class="orange">Compra de {{ product }}</h3>
+    <div class="card border-warning">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
                     {% if purchase_instance %}
+                        <h3 class="orange">Actualizá la información de tu compra de {{ product }}</h3>
                         <form action="{% url 'purchase_detail_edit' purchase_instance.pk product.pk %}" method="POST" autocomplete="off">
                     {% else %}
+                        <h3 class="orange">Compra de {{ product }}</h3>
                         <form action="{% url 'purchase_detail' product.pk %}" method="POST" autocomplete="off">
                     {% endif %}
-                        {% csrf_token %}
-                        {{ purchase_form.as_p }}
-                        <input type="submit" value="Cargar compra" class="btn btn-warning"/>
-                    </form>
+                            {% csrf_token %}
+                            {{ purchase_form.as_p }}
+                            <input type="submit" value="Cargar compra" class="btn btn-warning"/>
+                        </form>
                 </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <a class="btn btn-outline-warning btn-lg" href="{% url 'purchase_list' %}">
+                        Ver mis compras
+                    </a>
+                </div>
+                {% if purchase_instance %}
+                <div class="col-6">
+                    <a class="btn btn-danger btn-lg float-right" href="{% url 'purchase_delete' purchase_instance.pk %}">
+                        Eliminar
+                    </a>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>

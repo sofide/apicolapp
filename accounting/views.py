@@ -194,6 +194,13 @@ def purchase_detail(request, product_pk, purchase_pk=None):
 
 
 @login_required
+def purchase_delete(request, purchase_pk):
+    purchase = get_object_or_404(Purchase, pk=purchase_pk)
+    purchase.delete()
+    return redirect('purchase_list')
+
+
+@login_required
 def sales_list(request):
     """Show user's sales list."""
     from_date, to_date, dates_form = dates_form_processor(request)
