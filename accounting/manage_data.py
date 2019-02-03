@@ -39,16 +39,19 @@ def purchases_by_categories(user_id, from_date, to_date):
     grouped_purchases = {}
 
     for category in categories:
+        categ_purchases = [
+            purchase
+            for purchase
+            in purchases.filter(product__category=category).values(
+                'pk', 'amount', 'value', 'date', 'product__pk', 'product__name'
+                )
+        ]
         grouped_purchases[category.label] = {
             'slug': slugify(category.label),
             'description': category.description,
             'amount': category.amount,
-            'purchases': []
+            'purchases': categ_purchases,
         }
-
-    for purchase in purchases:
-        category = purchase.product.category.label
-        grouped_purchases[category]['purchases'].append(purchase)
 
     return grouped_purchases
 

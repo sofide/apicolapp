@@ -53,11 +53,11 @@
                         <tbody>
                         {% for purchase in category_data.purchases %}
                             <tr>
-                                <th scope="row" class="text-center">{{ purchase.product }}</th>
+                                <th scope="row" class="text-center">{{ purchase.product__name }}</th>
                                 <td class="text-center">{{ purchase.amount }}</td>
                                 <td class="text-center">{{ purchase.value }}</td>
                                 <td class="text-center">{{ purchase.date }}</td>
-                                <td class="text-center"><a href="{% url 'purchase_detail_edit' purchase.pk purchase.product.pk %}">
+                                <td class="text-center"><a href="{% url 'purchase_detail_edit' purchase.pk purchase.product__pk %}">
                                     editar
                                 </td>
                             </tr>
