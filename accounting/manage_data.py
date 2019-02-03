@@ -2,6 +2,7 @@
 Manipulate accounting data to be used in views.
 """
 from collections import defaultdict
+import datetime
 
 from django.db.models import Q, Sum
 from django.utils.text import slugify
@@ -50,3 +51,25 @@ def purchases_by_categories(user_id, from_date, to_date):
         grouped_purchases[category]['purchases'].append(purchase)
 
     return grouped_purchases
+
+
+def depreciation_calc_in_a_purchase(purchase, from_date, to_date, depreciation_period):
+    """Caluclate the depreciation value of a purchase in a specific range of time"""
+    deprecation_days = depreciation_period * 365
+    depreciation_finish = purchase.date + datetime.timedelta(days=deprecation_days)
+
+    if depreciation_finish < from_date:
+        days_in_calc = 0
+
+    elif purchase.date <= from_date:
+        if depreciation_finish < from_date:
+            days_in_calc = (depreciation_finish - from_date).days
+        else:
+            days_in_calc = (to_date - from_date).days
+    else:
+        if depreciation_finish < from_date:
+            days_in_calc = (depreciation_finish - purchase.date).days
+        else:
+            days_in_calc = (to_date - purchase.date).days
+
+    return (purchase.value / deprecation_days) * days_in_calc
