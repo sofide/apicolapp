@@ -40,12 +40,20 @@
             <div id="collapse_{{ category_data.slug}}" class="collapse" aria-labelledby="{{ category_data.slug }}" data-parent="#accordion">
               <div class="card-body">
                   {% if category_data.purchases %}
+                    {% if category_data.depreciation_period %}
+                    <p> Las compras de esta categoría se amortizan en {{ category_data.depreciation_period }} años. </p>
+                    {% endif %}
                     <table class="table table-striped">
                         <thead class="thead-dark">
                             <tr>
                                 <th scope="col" class="text-center">Producto</th>
                                 <th scope="col" class="text-center">Cantidad</th>
                                 <th scope="col" class="text-center">Monto</th>
+
+                                {% if category_data.depreciation_period %}
+                                <th scope="col" class="text-center">Amortización</th>
+                                {% endif %}
+
                                 <th scope="col" class="text-center">Fecha</th>
                                 <th scope="col" class="text-center"></th>
                             </tr>
@@ -56,6 +64,9 @@
                                 <th scope="row" class="text-center">{{ purchase.product__name }}</th>
                                 <td class="text-center">{{ purchase.amount }}</td>
                                 <td class="text-center">{{ purchase.value }}</td>
+                                {% if category_data.depreciation_period %}
+                                <td class="text-center">{{ purchase.depreciation }}</td>
+                                {% endif %}
                                 <td class="text-center">{{ purchase.date }}</td>
                                 <td class="text-center"><a href="{% url 'purchase_detail_edit' purchase.pk purchase.product__pk %}">
                                     editar

@@ -23,10 +23,6 @@ def purchases_by_categories(user_id, from_date, to_date):
         }
     }
     """
-    purchases = Purchase.objects.filter(
-        product__user__pk=user_id,
-        date__range=(from_date, to_date)
-    )
     category_amount = Sum(
         'products__purchases__value',
         filter=Q(
@@ -39,19 +35,36 @@ def purchases_by_categories(user_id, from_date, to_date):
     grouped_purchases = {}
 
     for category in categories:
-        categ_purchases = [
-            purchase
-            for purchase
-            in purchases.filter(product__category=category).values(
-                'pk', 'amount', 'value', 'date', 'product__pk', 'product__name'
-                )
-        ]
+        if category.depreciation_period:
+            deprecation_days = category.depreciation_period * 365
+            from_purchase_date = from_date - datetime.timedelta(days=deprecation_days)
+        else:
+            from_purchase_date = from_date
+
+        categ_purchases = Purchase.objects.filter(
+            product__user__pk=user_id,
+            date__range=(from_purchase_date, to_date),
+            product__category=category,
+        ).values(
+            'pk', 'amount', 'value', 'date', 'product__pk', 'product__name'
+        )
+
         grouped_purchases[category.label] = {
             'slug': slugify(category.label),
             'description': category.description,
             'amount': category.amount,
+            'depreciation_period': category.depreciation_period,
             'purchases': categ_purchases,
         }
+        if category.depreciation_period:
+            total_depreciation = 0
+            for purchase in grouped_purchases[category.label]['purchases']:
+                depreciation = depreciation_calc_in_a_purchase(purchase, from_date, to_date,
+                                                               category.depreciation_period)
+                total_depreciation += depreciation
+                purchase['depreciation'] = depreciation
+
+            grouped_purchases[category.label]['amount'] = total_depreciation
 
     return grouped_purchases
 
@@ -59,20 +72,20 @@ def purchases_by_categories(user_id, from_date, to_date):
 def depreciation_calc_in_a_purchase(purchase, from_date, to_date, depreciation_period):
     """Caluclate the depreciation value of a purchase in a specific range of time"""
     deprecation_days = depreciation_period * 365
-    depreciation_finish = purchase.date + datetime.timedelta(days=deprecation_days)
+    depreciation_finish = purchase['date'] + datetime.timedelta(days=deprecation_days)
 
     if depreciation_finish < from_date:
         days_in_calc = 0
 
-    elif purchase.date <= from_date:
+    elif purchase['date'] <= from_date:
         if depreciation_finish < from_date:
             days_in_calc = (depreciation_finish - from_date).days
         else:
             days_in_calc = (to_date - from_date).days
     else:
         if depreciation_finish < from_date:
-            days_in_calc = (depreciation_finish - purchase.date).days
+            days_in_calc = (depreciation_finish - purchase['date']).days
         else:
-            days_in_calc = (to_date - purchase.date).days
+            days_in_calc = (to_date - purchase['date']).days
 
-    return (purchase.value / deprecation_days) * days_in_calc
+    return (purchase['value'] / deprecation_days) * days_in_calc
