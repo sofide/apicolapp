@@ -43,6 +43,13 @@
                     {% if category_data.depreciation_period %}
                     <p> Las compras de esta categoría se amortizan en {{ category_data.depreciation_period }} años. </p>
                     {% endif %}
+                    <p> Se registró un total de {{ category_data.total }} compra{% if category_data.total > 1 %}s {% endif %} de {{ category_data.products }} 
+                        {% if category_data.products == 1 %}
+                            único producto.
+                        {% else %}
+                            productos distintos.
+                        {% endif %}
+                    </p>
                     <table class="table table-striped">
                         <thead class="thead-dark">
                             <tr>

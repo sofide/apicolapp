@@ -4,7 +4,8 @@ Manipulate accounting data to be used in views.
 from collections import defaultdict
 import datetime
 
-from django.db.models import Q, Sum
+from django.db.models import Q, Sum, Count
+from django.db.models.functions import Coalesce
 from django.utils.text import slugify
 
 from accounting.models import Category, Product, Purchase
@@ -56,6 +57,11 @@ def purchases_by_categories(user_id, from_date, to_date):
             'depreciation_period': category.depreciation_period,
             'purchases': categ_purchases,
         }
+        categ_info = categ_purchases.aggregate(
+            total=Coalesce(Count('id'), 0),
+            products=Coalesce(Count('product', distinct=True), 0)
+        )
+        grouped_purchases[category.label].update(categ_info)
         if category.depreciation_period:
             total_depreciation = 0
             for purchase in grouped_purchases[category.label]['purchases']:
