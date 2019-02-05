@@ -42,30 +42,12 @@ def accounting_index(request):
     from_date, to_date, dates_form = dates_form_processor(request)
 
     # INVESTMENTS
-    purchases = Purchase.objects.filter(
-        product__user=request.user,
-        date__range=(from_date, to_date)
-    ).aggregate(
-        invested_money=Coalesce(Sum('value'), 0),
-        total=Coalesce(Count('id'), 0),
-        products=Coalesce(Count('product', distinct=True), 0)
-    )
-
     purchases = purchases_by_categories(request.user.pk, from_date, to_date)
 
     invested_money = round(sum(categ_purchase['amount']
                                for categ_purchase in purchases.values()), 2)
     purchases_count = sum(categ_purchase['total'] for categ_purchase in purchases.values())
     products_count = sum(categ_purchase['products'] for categ_purchase in purchases.values())
-
-    sum_by_categories = Sum(
-        'products__purchases__value',
-        filter=Q(
-            products__purchases__product__user=request.user,
-            products__purchases__date__range=(from_date, to_date)
-        )
-    )
-    purchases_detail = Category.objects.annotate(money=sum_by_categories)
 
     # INCOMES
     sales = Sale.objects.filter(
@@ -85,11 +67,9 @@ def accounting_index(request):
         'from_date': from_date,
         'to_date': to_date,
         'dates_form': dates_form,
-        'purchases': purchases,
         'invested_money': invested_money,
         'purchases_count': purchases_count,
         'products_count': products_count,
-        'purchases_detail': purchases_detail,
         'sales': sales,
         'result': result,
         'profit': profit,

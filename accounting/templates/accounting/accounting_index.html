@@ -59,57 +59,6 @@
 
 </div>
 
-<hr/>
-
-<div class="row">
-    <div class="col">
-        <h3 class="mt-5">Tus compras</h3>
-    </div>
-</div>
-<div class="row">
-    <div class="col">
-        <a class="btn btn-outline-warning btn-lg mt-3"
-           href="{% url 'purchase_list' %}">
-                Ver mis compras
-        </a>
-        <a class="btn btn-outline-warning btn-lg mt-3"
-           href="{% url 'purchase_product' %}">
-                Cargar una nueva compra
-        </a>
-    </div>
-</div>
-<hr/>
-
-{% if purchases_detail %}
-
-    <div class="row">
-        <div class="col">
-            <table class="table table-striped">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col" class="text-center">Categoría</th>
-                        <th scope="col" class="text-center">Monto total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for category in purchases_detail %}
-                    <tr title="{{ category.description }}">
-                        <th scope="row" class="text-center">{{ category.label }}</th>
-                        {% if category.money %}
-                            <td class="text-center">{{ category.money }}</td>
-                        {% else %}
-                            <td class="text-center"> 0</td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-
-        </div>
-    </div>
-
-{% endif %}
-
 {% endblock %}
 
 {% block extra_css %}
