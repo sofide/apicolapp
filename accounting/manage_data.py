@@ -24,12 +24,15 @@ def purchases_by_categories(user_id, from_date, to_date):
         }
     }
     """
-    category_amount = Sum(
-        'products__purchases__value',
-        filter=Q(
-            products__user__pk=user_id,
-            products__purchases__date__range=(from_date, to_date)
-        )
+    category_amount = Coalesce(
+        Sum(
+            'products__purchases__value',
+            filter=Q(
+                products__user__pk=user_id,
+                products__purchases__date__range=(from_date, to_date)
+            )
+        ),
+        0
     )
     categories = Category.objects.all().annotate(amount=category_amount)
 
@@ -94,4 +97,4 @@ def depreciation_calc_in_a_purchase(purchase, from_date, to_date, depreciation_p
         else:
             days_in_calc = (to_date - purchase['date']).days
 
-    return (purchase['value'] / deprecation_days) * days_in_calc
+    return round((purchase['value'] / deprecation_days) * days_in_calc, 2)

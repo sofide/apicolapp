@@ -51,6 +51,13 @@ def accounting_index(request):
         products=Coalesce(Count('product', distinct=True), 0)
     )
 
+    purchases = purchases_by_categories(request.user.pk, from_date, to_date)
+
+    invested_money = round(sum(categ_purchase['amount']
+                               for categ_purchase in purchases.values()), 2)
+    purchases_count = sum(categ_purchase['total'] for categ_purchase in purchases.values())
+    products_count = sum(categ_purchase['products'] for categ_purchase in purchases.values())
+
     sum_by_categories = Sum(
         'products__purchases__value',
         filter=Q(
@@ -71,7 +78,7 @@ def accounting_index(request):
     )
 
 
-    result = sales['total_income'] - purchases['invested_money']
+    result = sales['total_income'] - invested_money
     profit = result > 0
 
     return render(request, 'accounting/accounting_index.html', {
@@ -79,6 +86,9 @@ def accounting_index(request):
         'to_date': to_date,
         'dates_form': dates_form,
         'purchases': purchases,
+        'invested_money': invested_money,
+        'purchases_count': purchases_count,
+        'products_count': products_count,
         'purchases_detail': purchases_detail,
         'sales': sales,
         'result': result,

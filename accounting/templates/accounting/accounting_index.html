@@ -48,8 +48,8 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Gastos</h4>
-                <p class="card-text">Se registraron {{ purchases.total }} compras de {{ purchases.products }} productos distintos.</p>
-                <h5 class="card-text text-center">${{ purchases.invested_money }}</h5>
+                <p class="card-text">Se registraron {{ purchases_count }} compras de {{ products_count }} productos distintos.</p>
+                <h5 class="card-text text-center">${{ invested_money }}</h5>
                 <div class="text-right">
                     <a href="{% url 'purchase_list' %}" class="btn btn-warning text-right">Ver detalle</a>
                 </div>
