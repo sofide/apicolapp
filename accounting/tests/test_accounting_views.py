@@ -4,44 +4,49 @@ from django.urls import reverse
 
 from apiary.models import Apiary
 
-# check every url
-def test_accounting_index_is_working(client_logged_as_manolo):
-    response = client_logged_as_manolo.get('/gestion/')
+SIMPLE_VIEWS_WITH_LOGIN = [
+    ('/gestion/', 'accounting_index'),
+    ('/gestion/productos/nuevo/', 'product_new'),
+    ('/gestion/compras/', 'purchase_list'),
+    ('/gestion/ventas/', 'sales_list'),
+    ('/gestion/ventas/cargar/', 'sale_new'),
+]
+
+@pytest.mark.parametrize('path,reverse_url', SIMPLE_VIEWS_WITH_LOGIN)
+def test_all_simple_views_are_working(client_logged_as_manolo, path, reverse_url):
+    response = client_logged_as_manolo.get(path)
     assert response.status_code == 200
 
-    response = client_logged_as_manolo.get(reverse('accounting_index'))
+    response = client_logged_as_manolo.get(reverse(reverse_url))
     assert response.status_code == 200
 
 
-def test_product_new_is_working(client_logged_as_manolo):
-    response = client_logged_as_manolo.get('/gestion/productos/nuevo/')
-    assert response.status_code == 200
+@pytest.mark.parametrize('path,reverse_url', SIMPLE_VIEWS_WITH_LOGIN)
+def test_all_simple_views_are_redirecting_if_not_user_is_not_logged(client, path, reverse_url):
+    response = client.get(path)
+    assert response.status_code == 302
+    assert response.url.startswith(reverse('login'))
 
-    response = client_logged_as_manolo.get(reverse('product_new'))
-    assert response.status_code == 200
+    response = client.get(reverse(reverse_url))
+    assert response.status_code == 302
+    assert response.url.startswith(reverse('login'))
 
-# TODO test its saving a new product
-# TODO test if reciving next param is redirecting correctly
-# TODO raise error if not logged
 
-def test_product_edit_is_working(client_logged_as_manolo, product_of_manolo):
+def test_edit_product_is_working(client_logged_as_manolo, product_of_manolo):
     response = client_logged_as_manolo.get('/gestion/editar/{}/'.format(product_of_manolo.pk))
     assert response.status_code == 200
 
     response = client_logged_as_manolo.get(reverse('product_edit', args=(product_of_manolo.pk,)))
     assert response.status_code == 200
+# PRODUCT_NEW
+# TODO test its saving a new product
+# TODO test if reciving next param is redirecting correctly
+# TODO raise error if not logged
 
+# PRODUCT EDIT
 # TODO test its editing a new product
 # TODO raise error if not logged
 # TODO raise error if trying to edit another user product
-
-def test_purchase_list_is_working(client_logged_as_manolo):
-    response = client_logged_as_manolo.get('/gestion/compras/')
-    assert response.status_code == 200
-
-    response = client_logged_as_manolo.get(reverse('purchase_list'))
-    assert response.status_code == 200
-
 
 def test_purchase_product_is_working(client_logged_as_manolo, product_of_manolo):
     response = client_logged_as_manolo.get('/gestion/compras/cargar/')
@@ -83,7 +88,7 @@ def test_purchase_detail_edit_is_working(client_logged_as_manolo, product_of_man
     assert response.status_code == 200
 
     response = client_logged_as_manolo.get(
-        reverse('purchase_detail', args=(product_of_manolo.pk,))
+        reverse('purchase_detail_edit', args=(product_of_manolo.pk, product_of_manolo.pk))
     )
     assert response.status_code == 200
 
@@ -105,20 +110,7 @@ def test_purchase_delete_is_working(client_logged_as_manolo, purchase_of_manolo)
 # TODO raise error if trying to delete another user product
 
 
-def test_sales_list_is_working(client_logged_as_manolo):
-    response = client_logged_as_manolo.get('/gestion/ventas/')
-    assert response.status_code == 200
-
-    response = client_logged_as_manolo.get(reverse('sales_list'))
-    assert response.status_code == 200
-
-def test_sale_new_is_working(client_logged_as_manolo):
-    response = client_logged_as_manolo.get('/gestion/ventas/cargar/')
-    assert response.status_code == 200
-
-    response = client_logged_as_manolo.get(reverse('sale_new'))
-    assert response.status_code == 200
-
+# SALES NEW
 # TODO test its saving a new sale
 # TODO raise error if not logged
 
