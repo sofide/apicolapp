@@ -60,7 +60,7 @@ def accounting_index(request):
     )
 
 
-    result = sales['total_income'] - invested_money
+    result = round(sales['total_income'] - invested_money, 2)
     profit = result > 0
 
     return render(request, 'accounting/accounting_index.html', {
