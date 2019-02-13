@@ -38,15 +38,7 @@ def test_edit_product_is_working(client_logged_as_manolo, product_of_manolo):
 
     response = client_logged_as_manolo.get(reverse('product_edit', args=(product_of_manolo.pk,)))
     assert response.status_code == 200
-# PRODUCT_NEW
-# TODO test its saving a new product
-# TODO test if reciving next param is redirecting correctly
-# TODO raise error if not logged
 
-# PRODUCT EDIT
-# TODO test its editing a new product
-# TODO raise error if not logged
-# TODO raise error if trying to edit another user product
 
 def test_purchase_product_is_working(client_logged_as_manolo, product_of_manolo):
     response = client_logged_as_manolo.get('/gestion/compras/cargar/')
@@ -75,10 +67,6 @@ def test_purchase_detail_is_working(client_logged_as_manolo, product_of_manolo):
     )
     assert response.status_code == 200
 
-# TODO test its saving a new purchase with the given product
-# TODO raise error if not logged
-# TODO raise error if trying to purchase another user product
-
 
 def test_purchase_detail_edit_is_working(client_logged_as_manolo, product_of_manolo,
                                          purchase_of_manolo):
@@ -92,11 +80,6 @@ def test_purchase_detail_edit_is_working(client_logged_as_manolo, product_of_man
     )
     assert response.status_code == 200
 
-# TODO test its editing the purchase
-# TODO raise error if product its not the same as the original purchase
-# TODO raise error if not logged
-# TODO raise error if trying to edit another user purchase
-
 
 def test_purchase_delete_is_working(client_logged_as_manolo, purchase_of_manolo):
     response = client_logged_as_manolo.get(
@@ -104,15 +87,6 @@ def test_purchase_delete_is_working(client_logged_as_manolo, purchase_of_manolo)
     )
     assert response.status_code == 302
     assert response.url == reverse('purchase_list')
-
-# TODO test its deleting a new purchase with the given product
-# TODO raise error if not logged
-# TODO raise error if trying to delete another user product
-
-
-# SALES NEW
-# TODO test its saving a new sale
-# TODO raise error if not logged
 
 
 def test_sale_edit_is_working(client_logged_as_manolo, sale_of_manolo):
@@ -122,10 +96,6 @@ def test_sale_edit_is_working(client_logged_as_manolo, sale_of_manolo):
     response = client_logged_as_manolo.get(reverse('sale_edit', args=(sale_of_manolo.pk,)))
     assert response.status_code == 200
 
-# TODO test its editing the sale
-# TODO raise error if not logged
-# TODO raise error if trying to edit another user sale
-
 
 def test_sale_delete_is_working(client_logged_as_manolo, sale_of_manolo):
     response = client_logged_as_manolo.get(
@@ -134,6 +104,41 @@ def test_sale_delete_is_working(client_logged_as_manolo, sale_of_manolo):
     assert response.status_code == 302
     assert response.url == reverse('sales_list')
 
+
+# PURCHASE DETAIL
+# TODO test its saving a new purchase with the given product
+# TODO raise error if not logged
+# TODO raise error if trying to purchase another user product
+
+# PRODUCT_NEW
+# TODO test its saving a new product
+# TODO test if reciving next param is redirecting correctly
+
+# PRODUCT EDIT
+# TODO test its editing a new product
+# TODO raise error if not logged
+# TODO raise error if trying to edit another user product
+
+# EDIT PURCHASE
+# TODO test its editing the purchase
+# TODO raise error if product its not the same as the original purchase
+# TODO raise error if not logged
+# TODO raise error if trying to edit another user purchase
+
+# PURCHASE DELETE
+# TODO test its deleting a new purchase with the given product
+# TODO raise error if not logged
+# TODO raise error if trying to delete another user product
+
+# SALES NEW
+# TODO test its saving a new sale
+
+# SALE EDIT
+# TODO test its editing the sale
+# TODO raise error if not logged
+# TODO raise error if trying to edit another user sale
+
+# SALE DELETE
 # TODO test its deleting the sale
 # TODO raise error if not logged
 # TODO raise error if trying to delete another user sale
