@@ -41,8 +41,8 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Ingresos</h4>
-                <p class="card-text">Se registraron {{ sales.total }} ventas por {{ sales.total_kg }}kg en total.</p>
                 <h5 class="card-text text-center">${{ sales.total_income }}</h5>
+                <p class="card-text">Se registraron {{ sales.total }} ventas por {{ sales.total_kg }}kg en total.</p>
                 <div class="text-right">
                     <a href="{% url 'sales_list' %}" class="btn btn-warning text-right">Ver detalle</a>
                 </div>
@@ -53,8 +53,28 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Gastos</h4>
-                <p class="card-text">Se registraron {{ purchases_count }} compras de {{ products_count }} productos distintos.</p>
                 <h5 class="card-text text-center">${{ invested_money }}</h5>
+                <h6> Gastos directos </h6>
+                {% if direct_expenses_data %}
+                    <p class="card-text">
+                        Se registraron {{ direct_expenses_data.purchases_count }} compras de
+                        {{ direct_expenses_data.products_count }} productos distintos, por un
+                        total de {{ direct_expenses_data.invested_money }}.
+                    </p>
+                {% else %}
+                    <p> No se registraron gastos directos en el período seleccionado. </p>
+                {% endif %}
+                <h6> Amortizaciones </h6>
+                {% if depreciation_purchases_data %}
+                    <p class="card-text">
+                        Se registran amortizaciones relacionadas a
+                        {{ depreciation_purchases_data.purchases_count }} compras de
+                        {{ depreciation_purchases_data.products_count }} productos distintos, por un
+                        total de {{ depreciation_purchases_data.invested_money }}.
+                    </p>
+                {% else %}
+                    <p> No se registraron gastos por amortizaciones en el período seleccionado. </p>
+                {% endif %}
                 <div class="text-right">
                     <a href="{% url 'purchase_list' %}" class="btn btn-warning text-right">Ver detalle</a>
                 </div>

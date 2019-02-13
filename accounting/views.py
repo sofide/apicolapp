@@ -44,10 +44,26 @@ def accounting_index(request):
     # INVESTMENTS
     purchases = purchases_by_categories(request.user.pk, from_date, to_date)
 
-    invested_money = round(sum(categ_purchase['amount']
-                               for categ_purchase in purchases.values()), 2)
-    purchases_count = sum(categ_purchase['total'] for categ_purchase in purchases.values())
-    products_count = sum(categ_purchase['products'] for categ_purchase in purchases.values())
+    invested_money = 0
+
+    direct_expenses_data = {}
+
+    depreciation_purchases_data = {}
+
+    for categ_purchase in purchases.values():
+        invested_money += categ_purchase['amount']
+
+        if categ_purchase['depreciation_period']:
+            data_dict = depreciation_purchases_data
+        else:
+            data_dict = direct_expenses_data
+
+        data_dict['invested_money'] = round(data_dict.get('invested_money', 0)
+                                            + categ_purchase['amount'], 2)
+        data_dict['products_count'] = round(data_dict.get('products_count', 0)
+                                            + categ_purchase['products'])
+        data_dict['purchases_count'] = round(data_dict.get('purchases_count', 0)
+                                             + categ_purchase['total'])
 
     # INCOMES
     sales = Sale.objects.filter(
@@ -68,8 +84,8 @@ def accounting_index(request):
         'to_date': to_date,
         'dates_form': dates_form,
         'invested_money': invested_money,
-        'purchases_count': purchases_count,
-        'products_count': products_count,
+        'direct_expenses_data': direct_expenses_data,
+        'depreciation_purchases_data': depreciation_purchases_data,
         'sales': sales,
         'result': result,
         'profit': profit,
