@@ -57,9 +57,11 @@
                 <h6> Gastos directos </h6>
                 {% if direct_expenses_data %}
                     <p class="card-text">
-                        Se registraron {{ direct_expenses_data.purchases_count }} compras de
-                        {{ direct_expenses_data.products_count }} productos distintos, por un
-                        total de {{ direct_expenses_data.invested_money }}.
+                        {{ direct_expenses_data.purchases_count }}
+                        {% if direct_expenses_data.purchases_count > 1%} compras {% else %} compra {% endif %}
+                        de {{ direct_expenses_data.products_count }}
+                        {% if direct_expenses_data.products_count > 1 %} productos distintos{% else %} producto{% endif %},
+                        por un total de {{ direct_expenses_data.invested_money }}.
                     </p>
                 {% else %}
                     <p> No se registraron gastos directos en el período seleccionado. </p>
@@ -67,10 +69,11 @@
                 <h6> Amortizaciones </h6>
                 {% if depreciation_purchases_data %}
                     <p class="card-text">
-                        Se registran amortizaciones relacionadas a
-                        {{ depreciation_purchases_data.purchases_count }} compras de
-                        {{ depreciation_purchases_data.products_count }} productos distintos, por un
-                        total de {{ depreciation_purchases_data.invested_money }}.
+                        Se registran amortizaciones relacionadas a {{ depreciation_purchases_data.purchases_count }}
+                        {% if depreciation_purchases_data.purchases_count > 1%} compras {% else %} compra {% endif %}
+                        de {{ depreciation_purchases_data.products_count }}
+                        {% if depreciation_purchases_data.products_count > 1 %}productos distintos{% else %} producto{% endif %},
+                        por un total de {{ depreciation_purchases_data.invested_money }}.
                     </p>
                 {% else %}
                     <p> No se registraron gastos por amortizaciones en el período seleccionado. </p>
