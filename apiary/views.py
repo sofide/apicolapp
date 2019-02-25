@@ -12,7 +12,9 @@ from apiary.data import apiary_history_table, apiary_history_chart
 @login_required
 def index(request):
     if request.user.is_authenticated:
-        apiaries = Apiary.objects.select_related('status').filter(owner=request.user)
+        apiaries = Apiary.objects.select_related('status')\
+            .filter(owner=request.user)\
+            .prefetch_related('harvest')
 
     else:
         apiaries = []
