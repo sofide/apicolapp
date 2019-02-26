@@ -35,16 +35,31 @@
     </div>
 </div>
 
-<div class="row mt-5">
-    <div class="col">
-        {{ div|safe }}
-        {{ script|safe }}
-    </div>
-</div>
-
 <div class="row">
     <div class="col">
-        <table class="table table-bordered mt-5">
+        <h4 class="mt-5"> Listado de cosechas </h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col" class="text-center">Fecha</th>
+                    <th scope="col" class="text-center">Cantidad cosechada</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for harvest in harvest_list %}
+                    <tr>
+                        <td class="text-center">{{ harvest.date }}</td>
+                        <td class="text-center">{{ harvest.amount }}</td>
+                    </tr>
+                {% endfor %}
+          </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <h4 class="mt-5"> Evolución de colmenas y núcleos </h4>
+        <table class="table table-bordered">
             <thead>
                 <tr>
                     {% for h in history_table.headers %}
@@ -64,4 +79,12 @@
         </table>
     </div>
 </div>
+
+<div class="row mt-5">
+    <div class="col">
+        {{ div|safe }}
+        {{ script|safe }}
+    </div>
+</div>
+
 {% endblock %}

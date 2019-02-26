@@ -88,8 +88,11 @@ def apiary_detail(request, apiary_pk):
     history_table = apiary_history_table(apiary)
     script, div = apiary_history_chart(history_table['body'], apiary.label)
 
+    harvest_list = Harvest.objects.filter(apiary=apiary)
+
     return render(request, 'apiary/detail.html', {
         'apiary': apiary,
+        'harvest_list': harvest_list,
         'history_table': history_table,
         'div': div,
         'script': script,
