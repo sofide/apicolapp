@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q, Sum, Count, Prefetch
@@ -18,9 +18,14 @@ def dates_form_processor(request):
     THIS FUNCTION IS NOT A VIEW
     """
     # defaults from_date and to_date params
+    # default period starts the last August 8 and ends today.
     to_date = datetime.now().date()
-    one_year = timedelta(days=365)
-    from_date = to_date - one_year
+    if to_date.month >= 8:
+        from_year = to_date.year
+    else:
+        from_year = to_date.year - 1
+
+    from_date = date(from_year, 8, 1)
 
     if request.GET.get('from_date'):
         dates_form = forms.DateFromToForm(request.GET)
